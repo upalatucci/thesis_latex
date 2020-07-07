@@ -11,6 +11,7 @@
 \usepackage[margin=1.5in]{geometry}
 \usepackage{listings}
 \usepackage{setspace}
+\usepackage{longtable}
 
 \linespread{1.75}
 
@@ -78,7 +79,7 @@ The second class of techniques, MRA, are based on the introducing of spatial det
 The lack of the reference image is the principal issue in the evaluation of the pansharpening methods.
 When a couple of images are fused, the result cannot be compared with anything else. The sensors used for the acquisition cannot reach alone both spatial and spectral resolution of the result. As the two models are different, the result cannot be compared with another image acquired with a different sensor.
 For this reason, there is no universal measure of quality for the pansharpening. The scientific community common practice is to use the verification criteria that were proposed in the most credited work \cite{towaldetal}. This study defines two properties to use for the evaluation of the fused product: consistency and synthesis. The first means that the original MS image should be obtained with a degradation of the fused result.
-The second property describe that the fused image should preserve both the features of each band and the mutual relations among them. The definition of an algorithm that accomplishes these properties and of an index that can guarantee the correct evaluation are an open problem. But, no matter what index is decided to use, the unavailability of a reference image is a huge problem and a visual inspection is always mandatory. There are two techniques that can be used as a workaround. The first is to reduce both the images given in input to the pansharpening algorithm and use the original MS image as a reference for the result evaluation. The downside of this method is the assumption of invariance between scales, which justifies that the same algorithm operates similarly at reduced scale. The cited hypothesis  is not always verified as documented here \cite{scaleinvariance1} \cite{towaldetal}. A second technique is the use of an index that does not require a reference image.
+The second property describe that the fused image should preserve both the features of each band and the mutual relations among them. The definition of an algorithm that accomplishes these properties and of an index that can guarantee the correct evaluation are an open problem. But, no matter what index is decided to use, the unavailability of a reference image is a huge problem and a visual inspection is always mandatory. There are two techniques that can be used for the quality assessment. The first is to reduce both the images given in input to the pansharpening algorithm and use the original MS image as a reference for the result evaluation. The downside of this method is the assumption of invariance between scales, which justifies that the same algorithm operates similarly at reduced scale. The cited hypothesis  is not always verified as documented here \cite{scaleinvariance1} \cite{towaldetal}. A second technique is the use of an index that does not require a reference image.
 
 
 \section{CS}
@@ -397,21 +398,13 @@ The $ \widehat{M_L} $ is the fused image degraded to the resolution of the origi
 
 Early works in the field of Deep Learning have been made in the 1940s with the Perceptron \cite{perceptron} and in the 60s with the invention
 of backpropagation that is the most commonly used algorithm in the present day to train a Neural Network.
-The Neural Network is a model constituted by several Perceptron or also called neurons divided into different layers that give the 
+The Neural Network is a model constituted by several Perceptron, also called neurons, divided into different layers that give the 
 ability to learn, extract and distinguish different features from the data given in input.
 To learn these capabilities, the network should be subject to a training phase that requires an incredible amount of
 computational power.
-Indeed, in the beginning, this type of algorithm was discarded because the computes in the 60s was
+Indeed, in the beginning, this type of algorithm was discarded because the computers in the 60s was
 not powerful enough and there wasn't a great data availability. 
-
-LeCun in 1989 for the first time used a backpropagation algorithm to train a convolutional neural network, a particular
-type of networks constituted from different convolutional layers to classify handwritten digits.
-
-These days, the data collected with the internet, the incredible amount of computational power exhibited
-by data centers and GPUs, the performance of this type of algorithm and a large number of applicative fields,
-has encouraged the growth of Machine Learning and in particular, Deep Learning. 
-
-The training is a phase in which the model learns from new data and can differ for the type of issues that the model should solve.
+The training is a critical phase in which the model learns from new data and can differ for the type of issues that the model should solve.
 Most of the cases, the model gives a prediction and the result is compared with a reference. It is calculated the error between the
 output of the prediction and the reference and this error is propagated in all the neurons of the model. 
 This error modify the weights of all the neurons so that the next prediction for the same input it will much similar to the
@@ -422,6 +415,14 @@ to understand how to change the weights to minimize the loss.
 To use the Gradient Descendent, the loss function must be differentiable so that,
 the gradient operator can be applied more times.
 Many layers the net have, many times the algorithm apply the gradient to the function.
+
+LeCun in 1989 for the first time used a backpropagation algorithm to train a convolutional neural network, a particular
+type of networks constituted from different convolutional layers to classify handwritten digits.
+
+These days, the data collected with the internet, the incredible amount of computational power exhibited
+by data centers and GPUs, the performance of this type of algorithm and a large number of applicative fields,
+has encouraged the growth of Machine Learning and in particular, Deep Learning. 
+
 
 \section{Neural Networks}
 
@@ -470,23 +471,22 @@ like logistic sigmoid.
 The DL network can have different layers type that differ in how the perceptrons inside them are organized and 
 how they modify their weights during the training. 
 A layer of neurons can be expressed as a function, mostly non-linear, that apply a transformation of the input into the output as described in Fig.~\ref{fig:multilayer}.
-The first created layer was the dense layer in which all the neurons of a dense level are connected
-with all the neurons of the next layer. Every neuron has his weights that are tuned during the training phase
-and this generates very fast a large number of weights to train, so the necessity of a larger
+The first experimented layer was the dense layer in which all the neurons are connected
+with all the neurons of the next layer. Every neuron has his weights
+and with all the connections with other neurons generates very fast a large number of weights to train, so the necessity of a larger
 dataset and a longer time for the training. 
-The DL model is capable to extract and recognize features in the data as complex as the complexity of the model growth.
+
 A layer that gave an important improvement in computer vision applications is the
-convolutional layer, a layer that can apply different filters to the data at the same time.
-Commonly, several convolutional layers at the start of a neural network are used to extract features from an image. Features that can be 
-in a second phase, analyzed by a different type of layer, for example, a dense layer that has the characteristic to have a lot of neurons with different weights
-and so can learn different type of features (Fig.~\ref{fig:featuresextract}).
-The filters weights are learned in the training and don't matter how big is the image given in input,
-the same filters are applied for the entire input dimensions and the perceptions that constitute the layer,
-share the same weights. So, respect to a dense layer, the convolutional layer has a lower weights count. 
-This means that a convolutional layer is much faster to train and also allocate a minor amount of memory.
+convolutional layer. This layer can apply different filters to the data at the same time.
+
+Commonly, several convolutional layers at the start of a neural network are used to extract features from an image. 
+The DL model is capable to extract and recognize features in the data as complex as the model dimension growth.
+The features can be in a second phase, analyzed by a different type of layer, for example a dense layer, that can elaborate them for a classification or other tasks (Fig.~\ref{fig:featuresextract}).
+The filters weights of the convolutional layer are learned in the training and applied to the whole input and the neurons that constitute the layer,
+share the same weights. This layer, respect to a dense layer, has a lower weights count, is much faster to train and also allocate a minor amount of memory.
 Different layers in sequence can extract features more and more complex. 
-LSTM and GRU layer was created to give to the model the capability to predict using a sequence of data such as video or audio.
-Other layers were created to optimize the training like the pooling layer, max-pooling layer and dropout.
+LSTM and GRU layers were created to allow the model and recognize patterns among a sequence of data such as video or audio.
+Other layers like the pooling layer, max-pooling layer and dropout were created to optimize the training.
 
 
 \begin{figure}[t]
@@ -501,17 +501,23 @@ Other layers were created to optimize the training like the pooling layer, max-p
 
 Deep Learning is a subfield of Machine Learning focalized in the study of deep neural networks.
 The model architecture is made in such a way to extract features from the data and after lean from them.
-In this, the Deep Learning field differs from the other Machine Learning techniques in which they were focused, before, only on
-learning from handcrafter features. These are much more complicated to tune because require a high knowledge
-of the data structure used in the particular context. In the DL, the net is trained also for this task, but the net architecture
-is more complex.
+This is the main difference between the Deep Learning and other Machine Learning techniques.
+Other Machine Learning techniques are focused on learning from handcrafter features.
+The extraction process of this features should be tuned for the specific data structure used and 
+require a high knowledge of the particular context.
+
+In the DL, the net is trained also for the features extraction, but ths require a more complext architecture.
+
 Deep Learning gave a strong impulse to the development of very efficient algorithms in the computer vision field. 
 Indeed, these days there are a lot of tools on the internet that simplifies the use of complex models trained to 
-recognize hundreds of objects in an image. Also, there is the possibility to tune the net to recognize a custom object.
-This can be done with a technique called fine-tuning. 
+recognize hundreds of objects in an image. Also, there is the possibility to tune this kind of  nets to recognize a different set of objects with a technique called fine-tuning. 
+
 The fine-tuning is based on the concept (described also in Fig.~\ref{fig:dl-architecture}) that the initial layers of a model, 
 in computer vision always convolutional layers, are trained to extract features from the input. 
-This features will be used by the final layers of the model for the classification for example or for the target task of the model. The idea of fine-tuning is to reset the weights of the final layers so that the model, from the same features extracted, can classify different objects. With this technique is not necessary to train the model for days using very large datasets. 
+This features will be used by the final layers of the model to accomplish different tasks, for example classification. 
+
+The idea of fine-tuning is to reset the weights of the final layers so that the model, from the same features extracted, can accomplish another task, for example classify different objects. 
+With this technique is not necessary to train the model for days using very large datasets because is not necessary to train the entire network but only the final layers. 
 \begin{figure}[t]
     \centering
     \includegraphics[scale=1.2]{dlarchitecture.png}
@@ -527,15 +533,17 @@ This features will be used by the final layers of the model for the classificati
 Recently it was proposed in \cite{pnn} a new pansharpening method based on a convolutional neural network.
 It was specialized a network built for super-resolution \cite{superesolution} to accomplishes the 
 pansharpening task.
-It was built three different models for GeoEye1, IKONOS and WorldView2 sensors. This because the net weights 
+Three different models for GeoEye1, IKONOS and WorldView2 sensors have been built. This because the net weights 
 can be specialized to predict the sensor characteristics and give better performance. 
 Not only the weights but also the layers are slightly different from each other because the authors run different 
 test for each sensor to increase performance.
 An important issue in this field is that it's difficult to found good images because of the high cost for a high-resolution images.
-For this reason, it can't be built a deep network because became hard to train. The authors choice was to use three convolutional layers of architecture illustated in Fig.~\ref{fig:dl-pnn}. Using only convolutional layers have also the advantage that no matter the number of columns and rows
-of the images, the model fits the images dimensions and it can execute the pansharpening on anyway. What matters is the number of MS channels.
-The downside of convolutional layers is that reduce the image dimensions layer by layer because essentially, this type of layer
-apply a conlution between the input and some filters of a pre-determined kernel size without adding padding.
+For this reason, it can't be built a deep network because it became hard to train. The authors choice was to use three convolutional layers, illustated in Fig.~\ref{fig:dl-pnn}. Using only convolutional layers have also the advantage that no matter the number of columns and rows
+of the images, the model will fits the images dimensions and it can execute the pansharpening on anyway.
+
+The downside of convolutional layers is that it reduce the image dimensions layer by layer because essentially, this type of layer
+apply a convolution between the input and some filters of a pre-determined kernel size without adding padding. 
+For this reason, the output dimension will be reduced by half the kernel size in each direction.
 
 \begin{figure}[t]
     \centering
@@ -558,18 +566,47 @@ The MSE error between MS and the fused image is calculated and this error is use
 \end{figure}
 
 An improvement illustrated into the paper was to append also some radiometric relevant indexes  for the applications
-to adding information abound the image. It is showed that the network avoids learning this indexes that was already
-provided and could focus to learn other information.
-Another important step introduced in \cite{pnn2} is to run a fast session of fine-tuning before the 
+to adding information abound the image. It was showed that the network avoids learning this indexes already
+provided and it could focus to learn other information.
+Another important step introduced in \cite{pnn2} was to run a fast session of fine-tuning before the 
 application of the model to an image with the same procedure of the training.
 With the fine-tuning, the net can learn to fuse the new image in a downgraded version.
 This can train the network also for the new image and produce better performance.
-But, as described in the conclusion of \cite{pnn2}, Full-resolution quality,
-remains an open issue. Performance in downsampling domain is relatively relevance and
-no-reference measures in training can have a major impact.
+But, as described in the conclusion of \cite{pnn2} performance in downsampling domain is
+relatively relevance and no-reference measures in training can have a major impact.
 Another noteworthy downside of this method is that with misaligned images, the model is trained
 with a fraction of the misalignment depends on the scale ratio between PAN and MS. 
 This is an example that the degradation changes the sensor model in which we want to apply the pansharpening.
+
+In another paper \cite{residualpnn}, the authors has tried different architectures and strategies to improve the network released in \cite{pnn}.
+An important result it was reached with a residual version of the original network.
+The architecture is showed in Fig. \ref{fig:residual-architecture}.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[scale=.35]{residualpnn-architecture.png}
+    \caption{Residual-based version \cite{residualpnn}}
+    \label{fig:residual-architecture}
+\end{figure}
+
+Essentially, the residual version it was not trained to reproduce the whole image,
+but only the high-pass component. Indeed, the low-pass component is represented by the 
+multispectral image used in input. This means that the network reconstruct only the missing parts.
+
+Residual-based architecture was used in different papers ( \cite{residual1} and \cite{residual2})
+and in particular in the deep learning in \cite{residual3} and \cite{residual4}.
+
+In general, it was observed that it is easier to train a neural network for differences
+instead of reproducing an ouput really similar to the input. 
+Results of \cite{residual4} are showed in Fig. \ref{fig:residual-comparison}.
+
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[scale=.35]{residual_comparison.png}
+    \caption{Performance comparison between residual (right) and non residual (left) networks \cite{residual4}}
+    \label{fig:residual-comparison}
+\end{figure}
 
 \newpage
 
@@ -613,16 +650,39 @@ for python \cite{matlab}.
 
 \section{Automatic Differentiation}
 In mathematics, the automatic differentiation is a set of techniques to efficiently calculate, with a computer, the gradient of a function.
-Every computer program executes a sequence of elementary operations. To calculate the gradient of a function,
-most autodiff systems explicitly split the operations in a simplier ones and build a computation graph.
+Every computer program executes a sequence of elementary operations.
+There are different kind of techniques to differentiate a function: Automatic Differentiation, Numerical DIfferentiation and Symbolic Differentiation.
+The Numerical differentiation is the standard definition of a derivative.
+\begin{equation}
+    \frac{df(x)}{dx} = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}
+\end{equation}
+%
+This type of differentiation is easy to code but the evaluation have a really high cost.
+
+The Symbolic differentiation is the technique that use the chain rule, product rule and other rules to 
+split the expression in known derivative primitive to obtain the result.
+
+Symbolic differentiation is inefficient in terms of performance. The complexity can in a lot of cases be exponential.
+Furthermore, techniques that belong into this class are really difficult to convert into a computer programs.
+
+Automatic differentiation systems explicitly split the operations in a simplier ones and build a computation graph.
 Each node of the graph have some attributes like value, primitive operation and parents.
 For each primitive operation, it must be defined a Vector-Jacobian Product (VJP), a product based on the Jacobian
 that is the matrix of partial derivatives. Combining all the VJP of all the nodes return the value of the gradient.
 
+Automatic differentiation provide different modes like Forward mode and Reverse mode.
+In Forward mode, automatic differentiation and symbolic differentiation are equivalent as described in this paper \cite{auto_symbol}.
+They both apply the chain rule and other differentiation rules and actually create expression graphs,
+but the first one operates on computer programs, with numerical values and it was created specifically for the computer manipulation and 
+the second one operates on mathematical expressions and with symbols.
+Indeed, the automatic differentiation can handle also control flow statements like if while and loops.
+
 \section{Tensorflow and custom loss function implementation}
 Tensorflow is the most famouse machine learning and deep learning tool that implement the automatic differentiation.
 To define a custom loss function, Tensorflow provide an API. This API, define all the operations betweens Tensors that are the basic datatype of all operations in Tensorflow.
-Tensors in this algorithm stage have no values, but only sizes and other attributes.
+In the Table \ref{tab:tensorflowapi}, the math module API is showed ( more used module during the thesis ).
+
+Tensors in this algorithm stage does not hold real values, but only sizes and other tensors' attributes.
 Only during the training, when the gradient is calculated layer by layer, the tensors acquire a value.
 This allow to validate all operations before the actually computation and compile these safely.
 
@@ -634,6 +694,273 @@ And it's possible to add a layer using $model.add(Layer(args))$.
 $Layer$ is the corresponding class of the layer and args are the arguments like the input shape, the number of filters that the layer should have and so on depends on the class. 
 Use such a widespread framework has the advantage of having a large community that can help in difficult situations but 
 also a much larger compatibility on Operating Systems, GPU and hardware in general.
+
+
+\newgeometry{margin=1in}
+
+\begin{longtable}{ p{.30\textwidth} | p{.70\textwidth}} 
+\hline
+$abs(...);$ & Computes the absolute value of a tensor. \\
+
+$accumulate\_n(...);$ & Returns the element-wise sum of a list of tensors. \\
+
+$acos(...);$ & Computes acos of x element-wise. \\ 
+
+$acosh(...);$ & Computes inverse hyperbolic cosine of x element-wise. \\ 
+
+$add(...);$ & Returns x + y element-wise. \\ 
+
+$add\_n(...);$ & Adds all input tensors element-wise. \\ 
+
+$angle(...);$ & Returns the element-wise argument of a complex (or real) tensor. \\ 
+
+$argmax(...);$ & Returns the index with the largest value across axes of a tensor. \\ 
+
+$argmin(...);$ & Returns the index with the smallest value across axes of a tensor. \\ 
+
+$asin(...);$ & Computes the trignometric inverse sine of x element-wise. \\ 
+
+$asinh(...);$ & Computes inverse hyperbolic sine of x element-wise. \\ 
+
+$atan(...);$ & Computes the trignometric inverse tangent of x element-wise. \\ 
+
+$atan2(...);$ & Computes arctangent of y/x element-wise, respecting signs of the arguments. \\ 
+
+$atanh(...);$ & Computes inverse hyperbolic tangent of x element-wise. \\ 
+
+$bessel\_i0(...);$ & Computes the Bessel i0 function of x element-wise. \\ 
+
+$bessel\_i0e(...);$ & Computes the Bessel i0e function of x element-wise. \\ 
+
+$bessel\_i1(...);$ & Computes the Bessel i1 function of x element-wise. \\ 
+
+$bessel\_i1e(...);$ & Computes the Bessel i1e function of x element-wise. \\ 
+
+$betainc(...);$ & Compute the regularized incomplete beta integral . \\ 
+
+$bincount(...);$ & Counts the number of occurrences of each value in an integer array. \\ 
+
+$ceil(...);$ & Return the ceiling of the input, element-wise. \\ 
+
+$confusion\_matrix(...);$ & Computes the confusion matrix from predictions and labels. \\ 
+
+$conj(...);$ & Returns the complex conjugate of a complex number. \\ 
+
+$cos(...);$ & Computes cos of x element-wise. \\ 
+
+$cosh(...);$ & Computes hyperbolic cosine of x element-wise. \\ 
+
+$count\_nonzero(...);$ & Computes number of nonzero elements across dimensions of a tensor. \\ 
+
+$cumprod(...);$ & Compute the cumulative product of the tensor x along axis. \\ 
+
+$cumsum(...);$ & Compute the cumulative sum of the tensor x along axis. \\ 
+
+$cumulative\_logsumexp(...);$ & Compute the cumulative log-sum-exp of the tensor x along axis. \\ 
+
+$digamma(...);$ & Computes Psi, the derivative of Lgamma (the log of the absolute value o. \\ 
+
+$divide(...);$ & Computes Python style division of x by y. \\ 
+
+$divide\_no\_nan(...);$ & Computes a safe divide which returns 0 if the y is zero. \\ 
+
+$equal(...);$ & Returns the truth value of (x == y) element-wise. \\ 
+
+$erf(...);$ & Computes the Gauss error function of x element-wise. \\ 
+
+$erfc(...);$ & Computes the complementary error function of x element-wise. \\ 
+
+$erfinv(...);$ & Compute inverse error function. \\ 
+
+$exp(...);$ & Computes exponential of x element-wise. . \\ 
+
+$expm1(...);$ & Computes exp(x) - 1 element-wise. \\ 
+
+$floor(...);$ & Returns element-wise largest integer not greater than x. \\ 
+
+$floordiv(...);$ & Divides x / y elementwise, rounding toward the most negative integer. \\ 
+
+$floormod(...);$ & Returns element-wise remainder of division. When x < 0 xor y < 0 i. \\ 
+
+$greater(...);$ & Returns the truth value of (x > y) element-wise. \\ 
+
+$greater\_equal(...);$ & Returns the truth value of (x >= y) element-wise. \\ 
+
+$igamma(...);$ & Compute the lower regularized incomplete Gamma function P(a, x). \\ 
+
+$igammac(...);$ & Compute the upper regularized incomplete Gamma function Q(a, x). \\ 
+
+$imag(...);$ & Returns the imaginary part of a complex (or real) tensor. \\ 
+
+$in\_top\_k(...);$ & Says whether the targets are in the top K predictions. \\ 
+
+$invert\_permutation(...);$ & Computes the inverse permutation of a tensor. \\ 
+
+$is\_finite(...);$ & Returns which elements of x are finite. \\ 
+
+$is\_inf(...);$ & Returns which elements of x are Inf. \\ 
+
+$is\_nan(...);$ & Returns which elements of x are NaN. \\ 
+
+$is\_non\_decreasing(...);$ & Returns True if x is non-decreasing. \\ 
+
+$is\_strictly\_increasing(...);$ & Returns True if x is strictly increasing. \\ 
+
+$l2\_normalize(...);$ & Normalizes along dimension axis using an L2 norm. \\ 
+
+$lbeta(...);$ & Computes , reducing along the last dimension. \\ 
+
+$less(...);$ & Returns the truth value of (x < y) element-wise. \\ 
+
+$less\_equal(...);$ & Returns the truth value of (x <= y) element-wise. \\ 
+
+$lgamma(...);$ & Computes the log of the absolute value of Gamma(x) element-wise. \\ 
+
+$log(...);$ & Computes natural logarithm of x element-wise. \\ 
+
+$log1p(...);$ & Computes natural logarithm of (1 + x) element-wise. \\ 
+
+$log\_sigmoid(...);$ & Computes log sigmoid of x element-wise. \\ 
+
+$log\_softmax(...);$ & Computes log softmax activations. \\ 
+
+$logical\_and(...);$ & Logical AND function. \\ 
+
+$logical\_not(...);$ & Returns the truth value of NOT x element-wise. \\ 
+
+$logical\_or(...);$ & Returns the truth value of x OR y element-wise. \\ 
+
+$logical\_xor(...);$ & Logical XOR function. \\ 
+
+$maximum(...);$ & Returns the max of x and y (i.e. x > y ? x ;  y) element-wise. \\ 
+
+$minimum(...);$ & Returns the min of x and y (i.e. x < y ? x ; y) element-wise. \\ 
+
+$mod(...);$ & Returns element-wise remainder of division. When x < 0 xor y < 0 i. \\ 
+
+$multiply(...);$ & Returns an element-wise x * y. \\ 
+
+$multiply\_no\_nan(...);$ & Computes the product of x and y and returns 0 if the y is zero, even if x is NaN or infinite. \\ 
+
+$ndtri(...);$ & Compute quantile of Standard Normal. \\ 
+
+$negative(...);$ & Computes numerical negative value element-wise. \\ 
+
+$nextafter(...);$ & Returns the next representable value of x1 in the direction of x2, element-wise. \\ 
+
+$not\_equal(...);$ & Returns the truth value of (x != y) element-wise. \\ 
+
+$polygamma(...);$ & Compute the polygamma function . \\ 
+
+$polyval(...);$ & Computes the elementwise value of a polynomial. \\ 
+
+$pow(...);$ & Computes the power of one value to another. \\ 
+
+$real(...);$ & Returns the real part of a complex (or real) tensor. \\ 
+
+$reciprocal(...);$ & Computes the reciprocal of x element-wise. \\ 
+
+$reciprocal\_no\_nan(...);$ & Performs a safe reciprocal operation, element wise. \\ 
+
+$reduce\_all(...);$ & Computes the "logical and" of elements across dimensions of a tensor. \\ 
+
+$reduce\_any(...);$ & Computes the "logical or" of elements across dimensions of a tensor. \\ 
+
+$reduce\_euclidean\_norm(...);$ & Computes the Euclidean norm of elements across dimensions of a tensor. \\ 
+
+$reduce\_logsumexp(...);$ & Computes log(sum(exp(elements across dimensions of a tensor))). \\ 
+
+$reduce\_max(...);$ & Computes the maximum of elements across dimensions of a tensor. \\ 
+
+$reduce\_mean(...);$ & Computes the mean of elements across dimensions of a tensor. \\ 
+
+$reduce\_min(...);$ & Computes the minimum of elements across dimensions of a tensor. \\ 
+
+$reduce\_prod(...);$ & Computes the product of elements across dimensions of a tensor. \\ 
+
+$reduce\_std(...);$ & Computes the standard deviation of elements across dimensions of a tensor. \\ 
+
+$reduce\_sum(...);$ & Computes the sum of elements across dimensions of a tensor. \\ 
+
+$reduce\_variance(...);$ & Computes the variance of elements across dimensions of a tensor. \\ 
+
+$rint(...);$ & Returns element-wise integer closest to x. \\ 
+
+$round(...);$ & Rounds the values of a tensor to the nearest integer, element-wise. \\ 
+
+$rsqrt(...);$ & Computes reciprocal of square root of x element-wise. \\ 
+
+$scalar\_mul(...);$ & Multiplies a scalar times a Tensor or IndexedSlices object. \\ 
+
+$segment\_max(...);$ & Computes the maximum along segments of a tensor. \\ 
+
+$segment\_mean(...);$ & Computes the mean along segments of a tensor. \\ 
+
+$segment\_min(...);$ & Computes the minimum along segments of a tensor. \\ 
+
+$segment\_prod(...);$ & Computes the product along segments of a tensor. \\ 
+
+$segment\_sum(...);$ & Computes the sum along segments of a tensor. \\ 
+
+$sigmoid(...);$ & Computes sigmoid of x element-wise. \\ 
+
+$sign(...);$ & Returns an element-wise indication of the sign of a number. \\ 
+
+$sin(...);$ & Computes sine of x element-wise. \\ 
+
+$sinh(...);$ & Computes hyperbolic sine of x element-wise. \\ 
+
+$sobol\_sample(...);$ & Generates points from the Sobol sequence. \\ 
+
+$softmax(...);$ & Computes softmax activations. \\ 
+
+$softplus(...);$ & Computes softplus; log(exp(features) + 1). \\ 
+
+$softsign(...);$ & Computes softsign: features / (abs(features) + 1). \\ 
+
+$sqrt(...);$ & Computes element-wise square root of the input tensor. \\ 
+
+$square(...);$ & Computes square of x element-wise. \\ 
+
+$squared\_difference(...);$ & Returns (x - y)(x - y) element-wise. \\ 
+
+$subtract(...);$ & Returns x - y element-wise. \\ 
+
+$tan(...);$ & Computes tan of x element-wise. \\ 
+
+$tanh(...);$ & Computes hyperbolic tangent of x element-wise. \\ 
+
+$top\_k(...);$ & Finds values and indices of the k largest entries for the last dimension. \\ 
+
+$truediv(...);$ & Divides x / y elementwise (using Python 3 division operator semantics). \\ 
+
+$unsorted\_segment\_max(...);$ & Computes the maximum along segments of a tensor. \\ 
+
+$unsorted\_segment\_mean(...);$ & Computes the mean along segments of a tensor. \\ 
+
+$unsorted\_segment\_min(...);$ & Computes the minimum along segments of a tensor. \\ 
+
+$unsorted\_segment\_prod(...);$ & Computes the product along segments of a tensor. \\ 
+
+$unsorted\_segment\_sqrt\_n(...);$ & Computes the sum along segments of a tensor divided by the sqrt(N). \\ 
+
+$unsorted\_segment\_sum(...);$ & Computes the sum along segments of a tensor. \\ 
+
+$xdivy(...);$ & Returns 0 if x == 0, and x / y otherwise, elementwise. \\ 
+
+$xlog1py(...);$ & Compute x * log1p(y). \\ 
+
+$xlogy(...);$ & Returns 0 if x == 0, and x * log(y) otherwise, elementwise. \\ 
+
+$zero\_fraction(...);$ & Returns the fraction of zeros in value. \\ 
+
+$zeta(...):$ Compute the Hurwitz zeta function . \\ 
+
+\hline
+\label{tab:tensorflowapi}
+\end{longtable}
+
+\restoregeometry
 
 \subsection{Loss Function}
 
@@ -710,25 +1037,24 @@ Without the bell shape during the training, the model can only have an increase 
 \section{Experimental Settings}
 To compare the different methods, it was also trained the model with the reference image itself using the MSE loss function.
 The purpose is to compare the previous described methods with the best possible solution and to find the best index to use for the loss function, but is not applicable in a real approach.
-Using the reference image, it is clear that the model will reproduce the best image that can be predicted and the
+Using the reference image, it is clear that the model will reproduce the performance and the
 behaviour of the indexes during the traning can suggest which index could be used for a real non-reference training.
 
 \begin{figure}[t]
     \centering
     \includegraphics[scale=.5]{toulouse.png}
-    \caption{Multispectral Toulouse image used for all the tests}
+    \includegraphics[scale=.5]{toulouse_pan.png}
+    \caption{Multispectral and Pancromatic Toulouse images used for all the tests}
     \label{fig:toulouse}
 \end{figure}
 
-\begin{figure}
-    \centering
-    \includegraphics[scale=.5]{toulouse_pan.png}
-    \caption{Pancromatic Toulouse image used for all the tests}
-    \label{fig:toulouse_pan}
-\end{figure}
 
+All those type of training have been executed in a test image illustated with a true color representation in Fig. \ref{fig:toulouse}.
+Toulouse dataset: An IKONOS image has been acquired over the city of Toulouse, France, in the 2000.
+The MS sensor acquires an image of 512×512 pixels in the visible and near-infrared spectrum range in 4
+different bands and with a 4m spatial sampling interval (SSI). 
+The pancromatic image is constitute by an image of 2048×2048 pixels with a 1m SSI.
 
-All those type of training have been executed in a test image: the Fig. \ref{fig:toulouse} \ref{fig:toulouse_pan}.
 
 \section{Results}
 Using the original QNR function has not produce any positive results.
@@ -802,6 +1128,19 @@ They are the inverse respectively of p and q.
 \end{figure}
 
 The experiment conclusion was that best result are reached with alpha 0.5 and beta 2.
+
+After this experiments, all the methods have been compared and the results are available in Fig. \ref{fig:gt_rr_noref}.
+GT is the method that use the Ground Truth during the training to have the best performance,
+RR is the method used in \cite{pnn} with a reduced resolution training and the NOREF is the method
+implemented in this thesis with a full-resolution training and HQNR index described in the previous paragraphs. 
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[scale=.6]{toulouse_gt_rr_noref.png}
+    \caption{Experiment results with GT, RR and NOREF}
+    \label{fig:gt_rr_noref}
+\end{figure}
+
 
 \chapter*{Conclusions}
 ``I always thought something was fundamentally wrong with the universe'' \cite{criticalComparison}
