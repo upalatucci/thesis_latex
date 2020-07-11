@@ -396,47 +396,48 @@ The $ \widehat{M_L} $ is the fused image degraded to the resolution of the origi
 
 \section{Introduction}
 
-Early works in the field of Deep Learning have been made in the 1940s with the Perceptron \cite{perceptron} and in the 60s with the invention
-of backpropagation that is the most commonly used algorithm in the present day to train a Neural Network.
-The Neural Network is a model constituted by several Perceptron, also called neurons, divided into different layers that give the 
-ability to learn, extract and distinguish different features from the data given in input.
-To learn these capabilities, the network should be subject to a training phase that requires an incredible amount of
+Early works in the field of Deep Learning have been made in the 1940s starting from the concept of Perceptron \cite{perceptron} and afterwards in the 60s with the invention
+of backpropagation, the most commonly used algorithm in the present day to train a Neural Network.
+The Neural Network is a model constituted by several Perceptrons, also called neurons, that are divided into different layers with the 
+ability to learn, extract and distinguish different features from the data given into input.
+In order to obtain these capabilities, the network should be subjected to a training phase that requires an incredible amount of
 computational power.
-Indeed, in the beginning, this type of algorithm was discarded because the computers in the 60s was
-not powerful enough and there wasn't a great data availability. 
-The training is a critical phase in which the model learns from new data and can differ for the type of issues that the model should solve.
-Most of the cases, the model gives a prediction and the result is compared with a reference. It is calculated the error between the
-output of the prediction and the reference and this error is propagated in all the neurons of the model. 
-This error modify the weights of all the neurons so that the next prediction for the same input it will much similar to the
-reference output. 
+As in the early 60s the computers were no powerful enough and there was not a great data availability,
+Deep Learning had no reason to be implemented as today.
+
+This field of study is characterized by different phases.
+One of them, the training, is a critical phase in which the model learns from new data and can differ for the type of issues that the model should solve.
+Most of the cases, the model gives a prediction and the result is compared with a target. Initially, the error is calculated between the
+output of the prediction and the target. After that, when the error is propagated in all the neurons of the model,
+the weights of all the neurons would be modified so that the next prediction for the same input would be much similar to the
+target output. 
 How this error is calculated and what means "similar" is established by the loss function that calculates the error.
-The backpropagation uses the Gradient Descendent algorithm, that it allows the network 
-to understand how to change the weights to minimize the loss.
-To use the Gradient Descendent, the loss function must be differentiable so that,
+The propagation use an algorithm called Gradient Descendent algorithm, that allows the network 
+to understand how to change the weights and minimize the loss.
+In order to use the Gradient Descendent, the loss function must be differentiable so that,
 the gradient operator can be applied more times.
-Many layers the net have, many times the algorithm apply the gradient to the function.
+Many layers the net have, many times the algorithm apply the gradient to the error.
 
-LeCun in 1989 for the first time used a backpropagation algorithm to train a convolutional neural network, a particular
-type of networks constituted from different convolutional layers to classify handwritten digits.
+LeCun (1989) for the first time used a backpropagation algorithm to train a neural network to classify handwritten digits.
 
-These days, the data collected with the internet, the incredible amount of computational power exhibited
+Nowadays, the data collected through internet, the incredible amount of computational power exhibited
 by data centers and GPUs, the performance of this type of algorithm and a large number of applicative fields,
-has encouraged the growth of Machine Learning and in particular, Deep Learning. 
+have encouraged the growth of Machine Learning and in particular, Deep Learning. 
 
 
 \section{Neural Networks}
 
 \subsection{Perceptron}
 
-Essentially a perceptron is an element in which, the output is a result of a weighted sum
-of the inputs. There is only one output but can be more inputs as described in the Fig.~\ref{fig:perceptron}. 
-A perceptron uses only one linear or non-linear activation function. In the following paragraph it will discuss what is an activation function.
+Essentially a perceptron is an element in which the output is a result of a weighted sum
+of the inputs. There is always only one output but it can be more inputs as described in the Fig.~\ref{fig:perceptron}. 
+A perceptron uses only one linear or non-linear activation function. The following paragraph will discuss what is an activation function and how it works.
 With a non-linear transfer function, perceptron can build a nonlinear plane separating data points of different classes.
-In 1969, it was proved that the perceptron itself may fail in certain simple tasks for example
+In 1969, it was proved that the perceptron itself may fail in certain simple tasks, as instance
 the separation of a plane described by the XOR function. 
-But 3 perceptron organized in 2 layers can separate an XOR plane.
+However, 3 perceptron organized in 2 layers can separate an XOR plane.
 This opened up the development of multi-layer models and subsequently, for training optimization for specific
-applications, the creation of the different type of layers.
+applications, the creation of different type of layers.
 
 \begin{figure}[t]
     \centering
@@ -447,16 +448,16 @@ applications, the creation of the different type of layers.
 
 \subsection{Activation Function}
 
-An activation function is used to transform the weighted data (input multiplied weights) 
-in outputs, in deep learning often a non-linear transformation.
-Indeed, using a non-linear transformation, we create new relationships between the points
-and this consent to the machine learning model to create increasingly complex features with every layer.
+Activation function is used to transform the weighted data (input multiplied weights) 
+in outputs.
+By the use of a non-linear transformation, we create new relation between the points.
+This consent to the machine learning model to create increasingly complex features with every layer.
 Features of many layers that uses pure linear transformations can be reproduced by a single 
 layer that use a non-linear function. 
-Most common activation functions is the rectified linear function or also colled ReLu that
+Most common activation functions is the so called ReLu that
 can be described as $y = max(0, x)$. The gradient is always x when the value of x is positive, 
 and 0 when negative. This means that during the training, negative gradients will not update the weights.
-Gradient equal 1 means that the training will be much faster compared with other activation functions
+A Gradient with equal 1 means that the training will be much faster compared with other activation functions
 like logistic sigmoid.
 
 \subsection{Layers}
@@ -468,24 +469,23 @@ like logistic sigmoid.
     \label{fig:multilayer}
 \end{figure}
 
-The DL network can have different layers type that differ in how the perceptrons inside them are organized and 
+The DL network can have different type of layers that differ in how the perceptrons inside them are organized and 
 how they modify their weights during the training. 
-A layer of neurons can be expressed as a function, mostly non-linear, that apply a transformation of the input into the output as described in Fig.~\ref{fig:multilayer}.
-The first experimented layer was the dense layer in which all the neurons are connected
-with all the neurons of the next layer. Every neuron has his weights
-and with all the connections with other neurons generates very fast a large number of weights to train, so the necessity of a larger
-dataset and a longer time for the training. 
+The Fig.~\ref{fig:multilayer} shows an example of multilayer model.
+The first experimented layer was the dense layer where all neurons are connected
+with all neurons of the next layer. Every neuron has his own weights
+and considerin all the neurons connections, this type of layer generates promptly a large number of weights.
+It will be  necessity a large
+dataset and a longe time for the training. 
 
-A layer that gave an important improvement in computer vision applications is the
-convolutional layer. This layer can apply different filters to the data at the same time.
+The convolutional layer gave an important improvement in computer vision applications. This layer can apply different filters to the data at the same time.
 
 Commonly, several convolutional layers at the start of a neural network are used to extract features from an image. 
-The DL model is capable to extract and recognize features in the data as complex as the model dimension growth.
-The features can be in a second phase, analyzed by a different type of layer, for example a dense layer, that can elaborate them for a classification or other tasks (Fig.~\ref{fig:featuresextract}).
-The filters weights of the convolutional layer are learned in the training and applied to the whole input and the neurons that constitute the layer,
-share the same weights. This layer, respect to a dense layer, has a lower weights count, is much faster to train and also allocate a minor amount of memory.
-Different layers in sequence can extract features more and more complex. 
-LSTM and GRU layers were created to allow the model and recognize patterns among a sequence of data such as video or audio.
+On a first phase The DL model is able to extract features in the data as complex as the model dimension growth as the Fig.~\ref{fig:featuresextract} shows.
+In a second phase, the features can be analyzed by different layers, for instance dense layers can elaborate features for classification or for other tasks.
+The filters weights of the convolutional layer are learned in the training and applied to the whole input where the neurons share the same weights. 
+For this reason, respect to a dense layer, the convolutional layer has a lower weights count,  is much faster to train and allocate a minor amount of memory.
+LSTM and GRU layers were created to allow the model to recognize patterns among a sequence of data such as video or audio.
 Other layers like the pooling layer, max-pooling layer and dropout were created to optimize the training.
 
 
@@ -503,21 +503,12 @@ Deep Learning is a subfield of Machine Learning focalized in the study of deep n
 The model architecture is made in such a way to extract features from the data and after lean from them.
 This is the main difference between the Deep Learning and other Machine Learning techniques.
 Other Machine Learning techniques are focused on learning from handcrafter features.
-The extraction process of this features should be tuned for the specific data structure used and 
-require a high knowledge of the particular context.
+The extraction process of this features should be tuned for the specific data structure and 
+require a high knowledge of particular context.
 
-In the DL, the net is trained also for the features extraction, but ths require a more complext architecture.
+In DL, the net is trained also for features extraction, but it require a more complex architecture.
+The Fig. \ref{fig:dl-architecture} propose a structure of a DL model. 
 
-Deep Learning gave a strong impulse to the development of very efficient algorithms in the computer vision field. 
-Indeed, these days there are a lot of tools on the internet that simplifies the use of complex models trained to 
-recognize hundreds of objects in an image. Also, there is the possibility to tune this kind of  nets to recognize a different set of objects with a technique called fine-tuning. 
-
-The fine-tuning is based on the concept (described also in Fig.~\ref{fig:dl-architecture}) that the initial layers of a model, 
-in computer vision always convolutional layers, are trained to extract features from the input. 
-This features will be used by the final layers of the model to accomplish different tasks, for example classification. 
-
-The idea of fine-tuning is to reset the weights of the final layers so that the model, from the same features extracted, can accomplish another task, for example classify different objects. 
-With this technique is not necessary to train the model for days using very large datasets because is not necessary to train the entire network but only the final layers. 
 \begin{figure}[t]
     \centering
     \includegraphics[scale=1.2]{dlarchitecture.png}
@@ -525,25 +516,24 @@ With this technique is not necessary to train the model for days using very larg
     \label{fig:dl-architecture}
 \end{figure}
 
+Moreover, it gave a strong impulse to the development of very efficient algorithms in the computer vision field. 
+Indeed, nowadays there are a lot of tools that simplifies the use of complex models trained to 
+recognize hundreds of objects in an image. The so called fine-tuning technique allows net to recognize a different set of objects.
 
-\newpage
+The purpose of fine-tuning is to reset the weights of final layers in a way that the model from the same features extracted, can accomplish another task.
+With this technique it will be just necessary train final layers instead of the entire model for days and using large datasets.
+
 
 \section{Pansharpening Applications}
 
-Recently it was proposed in \cite{pnn} a new pansharpening method based on a convolutional neural network.
-It was specialized a network built for super-resolution \cite{superesolution} to accomplishes the 
-pansharpening task.
-Three different models for GeoEye1, IKONOS and WorldView2 sensors have been built. This because the net weights 
-can be specialized to predict the sensor characteristics and give better performance. 
-Not only the weights but also the layers are slightly different from each other because the authors run different 
-test for each sensor to increase performance.
-An important issue in this field is that it's difficult to found good images because of the high cost for a high-resolution images.
-For this reason, it can't be built a deep network because it became hard to train. The authors choice was to use three convolutional layers, illustated in Fig.~\ref{fig:dl-pnn}. Using only convolutional layers have also the advantage that no matter the number of columns and rows
-of the images, the model will fits the images dimensions and it can execute the pansharpening on anyway.
+Recently a new pansharpening method based on a convolutional neural network has been proposed \cite{pnn}.
+To accomplish that, it has been specialized a network built for super-resolution \cite{superesolution}.
+From that model, other three different models has been assested for GeoEye1, IKONOS and WorldView2 sensors
+with the aim of predict the sensor characteristics and give better performance. 
 
-The downside of convolutional layers is that it reduce the image dimensions layer by layer because essentially, this type of layer
-apply a convolution between the input and some filters of a pre-determined kernel size without adding padding. 
-For this reason, the output dimension will be reduced by half the kernel size in each direction.
+An important issue in this field is that it is difficult to found good images because of the high cost for high-resolution images.
+For this reason, it cannot be possible train deep network. The choice of the authors was to use three convolutional layers, illustated in Fig.~\ref{fig:dl-pnn}.
+The advantage of using only convolutional layers is that the input can have differente sizes.
 
 \begin{figure}[t]
     \centering
@@ -552,11 +542,9 @@ For this reason, the output dimension will be reduced by half the kernel size in
     \label{fig:dl-pnn}
 \end{figure}
 
-\newpage
-
 The training phase showed in Fig.~\ref{fig:pnn-training} uses a reference approach in which the images are downsampled and fused. 
-After the downgrande, the $P_L$ image is appended to the MS downgraded and given in input to the model.
-The MSE error between MS and the fused image is calculated and this error is used for the training of the weights.
+After the downgrande, the $P_L$ image is attached to the MS downgraded in order to provide input to the model.
+The MSE error between MS and the fused image would be calculated and this error will be used for the training of the weights.
 
 \begin{figure}[t]
     \centering
@@ -565,22 +553,20 @@ The MSE error between MS and the fused image is calculated and this error is use
     \label{fig:pnn-training}
 \end{figure}
 
-An improvement illustrated into the paper was to append also some radiometric relevant indexes  for the applications
-to adding information abound the image. It was showed that the network avoids learning this indexes already
-provided and it could focus to learn other information.
+Radiometric relevant indexes has been used to improve the results \cite{pnn}. 
+It was showed that the network avoids learning the indexes provided with more focus on other information.
 Another important step introduced in \cite{pnn2} was to run a fast session of fine-tuning before the 
-application of the model to an image with the same procedure of the training.
-With the fine-tuning, the net can learn to fuse the new image in a downgraded version.
-This can train the network also for the new image and produce better performance.
-But, as described in the conclusion of \cite{pnn2} performance in downsampling domain is
-relatively relevance and no-reference measures in training can have a major impact.
-Another noteworthy downside of this method is that with misaligned images, the model is trained
-with a fraction of the misalignment depends on the scale ratio between PAN and MS. 
-This is an example that the degradation changes the sensor model in which we want to apply the pansharpening.
+application of the model.
+With the fine-tuning, the net can learn how to fuse the input in a downgraded version
+and after apply the prediction in the original images with better results.
+However, as described in the conclusion of \cite{pnn2}, performance in downsampling domain is
+not as much relevante as no-reference measures that have a major impact to performance.
+Another important disadvantage of the method is that when the model works with misaligned images 
+it is trained with images that have a fraction of the misalignment depending on the scale ratio between PAN and MS. 
 
-In another paper \cite{residualpnn}, the authors has tried different architectures and strategies to improve the network released in \cite{pnn}.
-An important result it was reached with a residual version of the original network.
-The architecture is showed in Fig. \ref{fig:residual-architecture}.
+In another paper \cite{residualpnn}, the authors has tried different structures and strategies to improve the network released in \cite{pnn}.
+An important result was achived with a residual version of the original network.
+The structure is showed in Fig. \ref{fig:residual-architecture}.
 
 \begin{figure}[t]
     \centering
@@ -589,18 +575,6 @@ The architecture is showed in Fig. \ref{fig:residual-architecture}.
     \label{fig:residual-architecture}
 \end{figure}
 
-Essentially, the residual version it was not trained to reproduce the whole image,
-but only the high-pass component. Indeed, the low-pass component is represented by the 
-multispectral image used in input. This means that the network reconstruct only the missing parts.
-
-Residual-based architecture was used in different papers ( \cite{residual1} and \cite{residual2})
-and in particular in the deep learning in \cite{residual3} and \cite{residual4}.
-
-In general, it was observed that it is easier to train a neural network for differences
-instead of reproducing an ouput really similar to the input. 
-Results of \cite{residual4} are showed in Fig. \ref{fig:residual-comparison}.
-
-
 \begin{figure}[t]
     \centering
     \includegraphics[scale=.35]{residual_comparison.png}
@@ -608,356 +582,169 @@ Results of \cite{residual4} are showed in Fig. \ref{fig:residual-comparison}.
     \label{fig:residual-comparison}
 \end{figure}
 
+The residual version was not trained to reproduce the whole image,
+but just the high-pass component. Indeed, the low-pass component is represented by the 
+multispectral image provided by input. This means that the network reconstructs just the missing parts.
+
+Residual-based structures were used in different papers ( \cite{residual1} and \cite{residual2}), in particular in the deep learning in \cite{residual3} and \cite{residual4}.
+
+As overall, it was observed that it is easier to train a neural network for differences
+instead of reproducing an ouput really similar to the input. 
+
+
+Results of \cite{residual4} are indicated in Fig. \ref{fig:residual-comparison}.
+
 \newpage
 
 \chapter{Proposed Solution}
 
 \section{Introduction}
 
-In this chapter will be described the concept of our solution and all the steps and issues encountered.
-The main goal it was to select a correct loss function and implement it using modern tools.
-
+The aim of this chapter is to discuss and evaluate the difference between the training of the reduced resolution approach in \cite{pnn}
+and the training of the no-reference approach developed in the research.
+The analysis will cover the Automatic Differentiation and the implementation in Tensorflow.
 
 \section{Loss Function Issue}
-In general, deep learning models should not be specialized too much for the training set, 
-because the model could have worse performance in real applications in which the net is not trained.
-To avoid this situation, is necessary to create a validation set during the training. The validation set is a dataset
-in which there are data that the net is not trained for. Performance on the validation set are more similar to real performance.
-To generate a reference image, necessary for the quality assessment, it was downsampled an MS and PAN.
-The original MS it was used as Ground Truth (GT) and the downgraded version will be called MS and PAN for simplicity.
-To build the training set for the reduced resolution method, selected an image to performe the fine-tuning, it was used the downgraded version of PAN and MS with
-the goal for the model to reproduce the MS. At every epoch, the PAN and MS were used 
-to produce a fused image with the updated weights and compared with the GT and so, these images constitute a validation set. 
-This procedure can give a real performance assessment of the whole model.
-During the training, the training set have always better performance because the model is optimizing the 
-error of these data. Only the performance of the validation set are really important. 
+\label{sec:lossfunction}
+To assest the training set for the reduced resolution method ( also called RR) described in \cite{pnn} ,
+the algorithm synthetized in the Fig. \ref{fig:rrtraining} has been implemented.
 
-In the fine-tuning, it is noticed that some images have worse performance with the updated weights 
-respect to the original ones without fine-tuning.
-These because the model is fine-tuned with the downgrade version of the original image in which it should be performed the fusion.
-The models in general are not scale invariance and downsampling the input does not guarantee similar performance like using the original images
-as described also in the previous chapters.
+Both PAN and MS are downsampled into two images called $MS_L$ and $PAN_L$.
+The $MS_L$ is upsampled to match the $PAN_L$ size.
+The images represent the input of the model that compute the eror by the use of MS.
 
-The thesis' aim is to change the training process using the MS and PAN combined with a no-reference index 
-and compare the results with the reduced resolution method. 
-The degraded images were given in input to the two methods and the result was compared with the reference, the original image.
-With the RR method ( reduced-resolution ), the inputs were downgraded another time for the fine-tuning, 
-but with the NOREF method ( no reference ), the inputs were just used for the training with a no-reference loss function.
-At every epoch, reference indexes like SAM, ERGAS and Q and also no reference index QNR and HQNR were calculated  between the images and the original image.
-These indexes were calculated with the MatLab toolbox functions provided by \cite{criticalComparison} using the MatLab engine 
-for python \cite{matlab}.
+Instead of this procedure, the reseachers decided to use the no-reference approach (NOREF) illustrated in Fig. \ref{fig:noreftraining}.
+As the figure shows, the images are not downsampled. The great advantage is that 
+the model is trained with origianl images and not with the downgraded version.
+Also in this case, the MS is upsampled to match the PAN size.
+Without the upsampling, it will not be possible to stack the images and apply the 3D filters of the convolutional layers.
+
+In this case, the loss function does not use a target.
+This is because the model is trained with the images at the higher possible resolution.
+Indeed, the loss computation is done using a no-reference index.
+For this reason, this approach belong into the Unsupervised Learning field.
+Opposite to Supervised Learning, Unsupervised learning is a subfield of Machine Learning where the training process is not leaded by a target.
+
+
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[scale=.35]{RRTraining.png}
+    \caption{Graph of the training algorithm released by \cite{pnn}}
+    \label{fig:rrtraining}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[scale=.35]{NOREFTraining.png}
+    \caption{Graph of the training algorithm developed}
+    \label{fig:noreftraining}
+\end{figure}
+
 
 
 \section{Automatic Differentiation}
-In mathematics, the automatic differentiation is a set of techniques to efficiently calculate, with a computer, the gradient of a function.
+Automatic differentiation is a set of techniques to efficiently calculate the gradient of a function with a computer.
 Every computer program executes a sequence of elementary operations.
-There are different kind of techniques to differentiate a function: Automatic Differentiation, Numerical DIfferentiation and Symbolic Differentiation.
-The Numerical differentiation is the standard definition of a derivative.
+There are different kind of techniques to differentiate a function: Automatic Differentiation, Numerical Differentiation and Symbolic Differentiation.
+Numerical differentiation is the standard definition of a derivative.
 \begin{equation}
     \frac{df(x)}{dx} = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}
 \end{equation}
 %
-This type of differentiation is easy to code but the evaluation have a really high cost.
+As described in \cite{autodiff}, this type of differentiation is easy to code.
+However, the $O(n)$ cost of the evaluation is so high
+that Machine Learning, where n can be millions or also billions, would not be accessible.
 
-The Symbolic differentiation is the technique that use the chain rule, product rule and other rules to 
-split the expression in known derivative primitive to obtain the result.
+Symbolic differentiation is a technique that use the chain rule, product rule and other rules to 
+split the expression in known derivative primitive to obtain result.
 
-Symbolic differentiation is inefficient in terms of performance. The complexity can in a lot of cases be exponential.
+Symbolic differentiation is inefficient in terms of performance. The complexity can be, in a lot of cases, exponential.
 Furthermore, techniques that belong into this class are really difficult to convert into a computer programs.
 
 Automatic differentiation systems explicitly split the operations in a simplier ones and build a computation graph.
 Each node of the graph have some attributes like value, primitive operation and parents.
-For each primitive operation, it must be defined a Vector-Jacobian Product (VJP), a product based on the Jacobian
-that is the matrix of partial derivatives. Combining all the VJP of all the nodes return the value of the gradient.
+
+Jacobian matrixes are used to represente the derivative of each output y with respect to each input x.
+
+\begin{equation}
+    J_f = \begin{bmatrix} 
+        \frac{dy_1}{dx_1} & \dots & \frac{dy_1}{dx_n} \\
+        \vdots & \ddots & \\
+        \frac{dy_m}{dx_1} &        & \frac{dy_m}{dx_n}
+        \end{bmatrix}
+\end{equation}
+%
+For each primitive operation, it must be defined a Vector-Jacobian Product (VJP). 
+Combining all the VJP nodes, the result would be the value of the gradient.
 
 Automatic differentiation provide different modes like Forward mode and Reverse mode.
 In Forward mode, automatic differentiation and symbolic differentiation are equivalent as described in this paper \cite{auto_symbol}.
-They both apply the chain rule and other differentiation rules and actually create expression graphs,
-but the first one operates on computer programs, with numerical values and it was created specifically for the computer manipulation and 
-the second one operates on mathematical expressions and with symbols.
-Indeed, the automatic differentiation can handle also control flow statements like if while and loops.
+They both apply the chain rule and other differentiation rules and actually create expression graphs.
+However, the first one was created specifically for the computer manipulation and includes numerical values. 
+The second one, symbolic differentiation, operates on mathematical expressions and symbols.
+Indeed, the automatic differentiation can handle also control flow statements like "if", "while" and "loops".
 
 \section{Tensorflow and custom loss function implementation}
 Tensorflow is the most famouse machine learning and deep learning tool that implement the automatic differentiation.
-To define a custom loss function, Tensorflow provide an API. This API, define all the operations betweens Tensors that are the basic datatype of all operations in Tensorflow.
-In the Table \ref{tab:tensorflowapi}, the math module API is showed ( more used module during the thesis ).
-
-Tensors in this algorithm stage does not hold real values, but only sizes and other tensors' attributes.
-Only during the training, when the gradient is calculated layer by layer, the tensors acquire a value.
-This allow to validate all operations before the actually computation and compile these safely.
+To build a custom loss function, Tensorflow provide APIs. This APIs, define all the operations betweens Tensors that are the basic datatype in Tensorflow.
+The Tensorflow APIs used in the research code are showed in the Table \ref{tab:tensorflowapi}.
+The external package tensorflow probability APIs used are showed in the Table \ref{tab:tensorflowprobability}.
 
 After the definition of the custom loss function, at runtime Tensorflow translate the python code in C/C++ for efficience purpouse, compile it, and build the computation graphs.
 Also, tensorflow from a couple of years integrate on it Keras, another framework that simplify the creation of the model with 
 all common layers well-defined into Classes.
-To create a model it is only necessary to create a $Model$ class.
-And it's possible to add a layer using $model.add(Layer(args))$.
-$Layer$ is the corresponding class of the layer and args are the arguments like the input shape, the number of filters that the layer should have and so on depends on the class. 
-Use such a widespread framework has the advantage of having a large community that can help in difficult situations but 
-also a much larger compatibility on Operating Systems, GPU and hardware in general.
+To create a model it is necessary to create a $Model$ class.
+It is possible to add a layer using $model.add(Layer(args))$.
+$Layer$ is the corresponding class of the layer and args are the arguments like the input shape, the number of filters the layer should have. 
+Firstly, using such a widespread framework has the advantage of a large community that support difficult situations;
+secondly it will be a larger compatibility on Operating Systems, GPUs and hardware in general.
 
 
 \newgeometry{margin=1in}
 
 \begin{longtable}{ p{.30\textwidth} | p{.70\textwidth}} 
+\caption{Table of tensorflow API used in the thesis}\\
 \hline
 $abs(...);$ & Computes the absolute value of a tensor. \\
 
-$accumulate\_n(...);$ & Returns the element-wise sum of a list of tensors. \\
-
-$acos(...);$ & Computes acos of x element-wise. \\ 
-
-$acosh(...);$ & Computes inverse hyperbolic cosine of x element-wise. \\ 
-
 $add(...);$ & Returns x + y element-wise. \\ 
 
-$add\_n(...);$ & Adds all input tensors element-wise. \\ 
+$cast(...):$ & Casts a tensor to a new type.\\
 
-$angle(...);$ & Returns the element-wise argument of a complex (or real) tensor. \\ 
-
-$argmax(...);$ & Returns the index with the largest value across axes of a tensor. \\ 
-
-$argmin(...);$ & Returns the index with the smallest value across axes of a tensor. \\ 
-
-$asin(...);$ & Computes the trignometric inverse sine of x element-wise. \\ 
-
-$asinh(...);$ & Computes inverse hyperbolic sine of x element-wise. \\ 
-
-$atan(...);$ & Computes the trignometric inverse tangent of x element-wise. \\ 
-
-$atan2(...);$ & Computes arctangent of y/x element-wise, respecting signs of the arguments. \\ 
-
-$atanh(...);$ & Computes inverse hyperbolic tangent of x element-wise. \\ 
-
-$bessel\_i0(...);$ & Computes the Bessel i0 function of x element-wise. \\ 
-
-$bessel\_i0e(...);$ & Computes the Bessel i0e function of x element-wise. \\ 
-
-$bessel\_i1(...);$ & Computes the Bessel i1 function of x element-wise. \\ 
-
-$bessel\_i1e(...);$ & Computes the Bessel i1e function of x element-wise. \\ 
-
-$betainc(...);$ & Compute the regularized incomplete beta integral . \\ 
-
-$bincount(...);$ & Counts the number of occurrences of each value in an integer array. \\ 
-
-$ceil(...);$ & Return the ceiling of the input, element-wise. \\ 
-
-$confusion\_matrix(...);$ & Computes the confusion matrix from predictions and labels. \\ 
-
-$conj(...);$ & Returns the complex conjugate of a complex number. \\ 
-
-$cos(...);$ & Computes cos of x element-wise. \\ 
-
-$cosh(...);$ & Computes hyperbolic cosine of x element-wise. \\ 
-
-$count\_nonzero(...);$ & Computes number of nonzero elements across dimensions of a tensor. \\ 
-
-$cumprod(...);$ & Compute the cumulative product of the tensor x along axis. \\ 
-
-$cumsum(...);$ & Compute the cumulative sum of the tensor x along axis. \\ 
-
-$cumulative\_logsumexp(...);$ & Compute the cumulative log-sum-exp of the tensor x along axis. \\ 
-
-$digamma(...);$ & Computes Psi, the derivative of Lgamma (the log of the absolute value o. \\ 
+$constant(...):$ & Creates a constant tensor from a tensor-like object. \\
 
 $divide(...);$ & Computes Python style division of x by y. \\ 
 
-$divide\_no\_nan(...);$ & Computes a safe divide which returns 0 if the y is zero. \\ 
-
-$equal(...);$ & Returns the truth value of (x == y) element-wise. \\ 
-
-$erf(...);$ & Computes the Gauss error function of x element-wise. \\ 
-
-$erfc(...);$ & Computes the complementary error function of x element-wise. \\ 
-
-$erfinv(...);$ & Compute inverse error function. \\ 
-
-$exp(...);$ & Computes exponential of x element-wise. . \\ 
-
-$expm1(...);$ & Computes exp(x) - 1 element-wise. \\ 
-
-$floor(...);$ & Returns element-wise largest integer not greater than x. \\ 
-
-$floordiv(...);$ & Divides x / y elementwise, rounding toward the most negative integer. \\ 
-
-$floormod(...);$ & Returns element-wise remainder of division. When x < 0 xor y < 0 i. \\ 
-
-$greater(...);$ & Returns the truth value of (x > y) element-wise. \\ 
-
-$greater\_equal(...);$ & Returns the truth value of (x >= y) element-wise. \\ 
-
-$igamma(...);$ & Compute the lower regularized incomplete Gamma function P(a, x). \\ 
-
-$igammac(...);$ & Compute the upper regularized incomplete Gamma function Q(a, x). \\ 
-
-$imag(...);$ & Returns the imaginary part of a complex (or real) tensor. \\ 
-
-$in\_top\_k(...);$ & Says whether the targets are in the top K predictions. \\ 
-
-$invert\_permutation(...);$ & Computes the inverse permutation of a tensor. \\ 
-
-$is\_finite(...);$ & Returns which elements of x are finite. \\ 
-
-$is\_inf(...);$ & Returns which elements of x are Inf. \\ 
-
-$is\_nan(...);$ & Returns which elements of x are NaN. \\ 
-
-$is\_non\_decreasing(...);$ & Returns True if x is non-decreasing. \\ 
-
-$is\_strictly\_increasing(...);$ & Returns True if x is strictly increasing. \\ 
-
-$l2\_normalize(...);$ & Normalizes along dimension axis using an L2 norm. \\ 
-
-$lbeta(...);$ & Computes , reducing along the last dimension. \\ 
-
-$less(...);$ & Returns the truth value of (x < y) element-wise. \\ 
-
-$less\_equal(...);$ & Returns the truth value of (x <= y) element-wise. \\ 
-
-$lgamma(...);$ & Computes the log of the absolute value of Gamma(x) element-wise. \\ 
-
-$log(...);$ & Computes natural logarithm of x element-wise. \\ 
-
-$log1p(...);$ & Computes natural logarithm of (1 + x) element-wise. \\ 
-
-$log\_sigmoid(...);$ & Computes log sigmoid of x element-wise. \\ 
-
-$log\_softmax(...);$ & Computes log softmax activations. \\ 
-
-$logical\_and(...);$ & Logical AND function. \\ 
-
-$logical\_not(...);$ & Returns the truth value of NOT x element-wise. \\ 
-
-$logical\_or(...);$ & Returns the truth value of x OR y element-wise. \\ 
-
-$logical\_xor(...);$ & Logical XOR function. \\ 
-
-$maximum(...);$ & Returns the max of x and y (i.e. x > y ? x ;  y) element-wise. \\ 
-
-$minimum(...);$ & Returns the min of x and y (i.e. x < y ? x ; y) element-wise. \\ 
-
-$mod(...);$ & Returns element-wise remainder of division. When x < 0 xor y < 0 i. \\ 
+$expand_dims(...):$ & Returns a tensor with an additional dimension inserted at index axis. \\
 
 $multiply(...);$ & Returns an element-wise x * y. \\ 
 
-$multiply\_no\_nan(...);$ & Computes the product of x and y and returns 0 if the y is zero, even if x is NaN or infinite. \\ 
+$ones(...):$ & Creates a tensor with all elements set to one. \\
 
-$ndtri(...);$ & Compute quantile of Standard Normal. \\ 
-
-$negative(...);$ & Computes numerical negative value element-wise. \\ 
-
-$nextafter(...);$ & Returns the next representable value of x1 in the direction of x2, element-wise. \\ 
-
-$not\_equal(...);$ & Returns the truth value of (x != y) element-wise. \\ 
-
-$polygamma(...);$ & Compute the polygamma function . \\ 
-
-$polyval(...);$ & Computes the elementwise value of a polynomial. \\ 
-
-$pow(...);$ & Computes the power of one value to another. \\ 
-
-$real(...);$ & Returns the real part of a complex (or real) tensor. \\ 
-
-$reciprocal(...);$ & Computes the reciprocal of x element-wise. \\ 
-
-$reciprocal\_no\_nan(...);$ & Performs a safe reciprocal operation, element wise. \\ 
-
-$reduce\_all(...);$ & Computes the "logical and" of elements across dimensions of a tensor. \\ 
-
-$reduce\_any(...);$ & Computes the "logical or" of elements across dimensions of a tensor. \\ 
-
-$reduce\_euclidean\_norm(...);$ & Computes the Euclidean norm of elements across dimensions of a tensor. \\ 
-
-$reduce\_logsumexp(...);$ & Computes log(sum(exp(elements across dimensions of a tensor))). \\ 
-
-$reduce\_max(...);$ & Computes the maximum of elements across dimensions of a tensor. \\ 
+$pad(...):$ & Pads a tensor. \\
 
 $reduce\_mean(...);$ & Computes the mean of elements across dimensions of a tensor. \\ 
-
-$reduce\_min(...);$ & Computes the minimum of elements across dimensions of a tensor. \\ 
-
-$reduce\_prod(...);$ & Computes the product of elements across dimensions of a tensor. \\ 
 
 $reduce\_std(...);$ & Computes the standard deviation of elements across dimensions of a tensor. \\ 
 
 $reduce\_sum(...);$ & Computes the sum of elements across dimensions of a tensor. \\ 
 
-$reduce\_variance(...);$ & Computes the variance of elements across dimensions of a tensor. \\ 
-
-$rint(...);$ & Returns element-wise integer closest to x. \\ 
-
-$round(...);$ & Rounds the values of a tensor to the nearest integer, element-wise. \\ 
-
-$rsqrt(...);$ & Computes reciprocal of square root of x element-wise. \\ 
-
-$scalar\_mul(...);$ & Multiplies a scalar times a Tensor or IndexedSlices object. \\ 
-
-$segment\_max(...);$ & Computes the maximum along segments of a tensor. \\ 
-
-$segment\_mean(...);$ & Computes the mean along segments of a tensor. \\ 
-
-$segment\_min(...);$ & Computes the minimum along segments of a tensor. \\ 
-
-$segment\_prod(...);$ & Computes the product along segments of a tensor. \\ 
-
-$segment\_sum(...);$ & Computes the sum along segments of a tensor. \\ 
-
-$sigmoid(...);$ & Computes sigmoid of x element-wise. \\ 
-
-$sign(...);$ & Returns an element-wise indication of the sign of a number. \\ 
-
-$sin(...);$ & Computes sine of x element-wise. \\ 
-
-$sinh(...);$ & Computes hyperbolic sine of x element-wise. \\ 
-
-$sobol\_sample(...);$ & Generates points from the Sobol sequence. \\ 
-
-$softmax(...);$ & Computes softmax activations. \\ 
-
-$softplus(...);$ & Computes softplus; log(exp(features) + 1). \\ 
-
-$softsign(...);$ & Computes softsign: features / (abs(features) + 1). \\ 
-
 $sqrt(...);$ & Computes element-wise square root of the input tensor. \\ 
 
 $square(...);$ & Computes square of x element-wise. \\ 
 
-$squared\_difference(...);$ & Returns (x - y)(x - y) element-wise. \\ 
-
-$subtract(...);$ & Returns x - y element-wise. \\ 
-
-$tan(...);$ & Computes tan of x element-wise. \\ 
-
-$tanh(...);$ & Computes hyperbolic tangent of x element-wise. \\ 
-
-$top\_k(...);$ & Finds values and indices of the k largest entries for the last dimension. \\ 
-
-$truediv(...);$ & Divides x / y elementwise (using Python 3 division operator semantics). \\ 
-
-$unsorted\_segment\_max(...);$ & Computes the maximum along segments of a tensor. \\ 
-
-$unsorted\_segment\_mean(...);$ & Computes the mean along segments of a tensor. \\ 
-
-$unsorted\_segment\_min(...);$ & Computes the minimum along segments of a tensor. \\ 
-
-$unsorted\_segment\_prod(...);$ & Computes the product along segments of a tensor. \\ 
-
-$unsorted\_segment\_sqrt\_n(...);$ & Computes the sum along segments of a tensor divided by the sqrt(N). \\ 
-
-$unsorted\_segment\_sum(...);$ & Computes the sum along segments of a tensor. \\ 
-
-$xdivy(...);$ & Returns 0 if x == 0, and x / y otherwise, elementwise. \\ 
-
-$xlog1py(...);$ & Compute x * log1p(y). \\ 
-
-$xlogy(...);$ & Returns 0 if x == 0, and x * log(y) otherwise, elementwise. \\ 
-
-$zero\_fraction(...);$ & Returns the fraction of zeros in value. \\ 
-
-$zeta(...):$ Compute the Hurwitz zeta function . \\ 
-
+$squeeze(...):$ & Removes dimensions of size 1 from the shape of a tensor.\\
 \hline
 \label{tab:tensorflowapi}
+\end{longtable}
+
+\begin{longtable}{ p{.30\textwidth} | p{.70\textwidth}} 
+\caption{Table of tensorflow probability API used in the thesis}\\
+\hline
+$stats.covariance(...);$ & Sample covariance between observations indexed by event\_axis. \\ 
+\hline
+\label{tab:tensorflowprobability}
 \end{longtable}
 
 \restoregeometry
@@ -975,24 +762,23 @@ where $\widetilde{QNR}$ is the approximated QNR.
 
 The $D_s$ and $D_\lambda$ were calculated using the Qavg that is the average of Q evaluation for each band. The Q was calculated considering the whole image and not
 dividing it into small patches.
-With this loss function, the result after the training presents a lot of negative values and also after a clip
-by values of the image with 0 and 1 as minimum and maximum, the performance was unsatisfactory ( results illustated in the Chapter \ref{chap4}).
-This because the model want to minimize the loss functions and so, maximize the QNR considering (25) no matter 
+The result shows series of negative values instead of values between 0 and 1 as the original images format.
+This is why the performance was unsatisfactory ( results illustated in the Chapter \ref{chap4}).
+Indeed, the model wants to minimize the loss functions ( maximize the QNR considering \ref{loss} ) no matter 
 the sense of output values.
-After some tests, it was considered to solve this problem using a different $D_s$, the $D_sreg$ \cite{dsreg} 
+After some tests, it was considered to solve this problem using the $D_sreg$ described in \cite{dsreg} instead of $D_s$  
 and migrate to an approximation of HQNR instead of the QNR.
-It was discovered that it's really difficult to manipulate quaternions and hypercomplex numbers in TensorFlow in such
-a way that the function remains differentiable so, the exactly HQNR it was impossible to implement.  
-Also a different kind of $D_\lambda$ was implemented because the first one used by the original 
-QNR did not reflect great performance according to the scientific community and the author itself.
+Implement the exact HQNR it was impossible due to the difficulty on manupulating quaternions and hypercomplex numbers in TensorFlow in such
+a way that the function would be kept differentiable.
+In order to gain better performance, different kind of $D_\lambda$ has been implemented according to the scientific community and the QNR author itself.
 
 \chapter{Implementation details and experimental results}\label{chap4}
 \section{Description}
-The code was written in python 3.7 using the file main.py as a entrypoint and it is compatible with Linux, Windows and MacOS and can run on dedicated GPU as well as on CPU.
+The code was written in python 3.7 using the file main.py as a entrypoint. It is compatible with Linux, Windows and MacOS and can run on dedicated GPU as well as on CPU.
 Obviously, on CPU with a large decrease in performance in the training.
-The program was implemented in such a way that all the possible algorithms, methods, parameters, learning rate and so on,
-can be defined on the terminal with arguments using the standard $argparse$ library.
-This allow to run, with a bash commands, all the experiments in series without changing the code.
+The software was implemented using the standard $argparse$ library in such a way that all the possible algorithms, methods, parameters, learning rate and so on,
+can be defined with arguments on the terminal.
+This allow to run, with a bash file, all the experiments in series without changing the code.
 
 In the beginning, the QNR function has developed with an approximation. In the Appendix \ref{qnr_functions} the reader can 
 find all the principal functions written for the QNR. 
@@ -1035,10 +821,6 @@ Without the bell shape during the training, the model can only have an increase 
 
 
 \section{Experimental Settings}
-To compare the different methods, it was also trained the model with the reference image itself using the MSE loss function.
-The purpose is to compare the previous described methods with the best possible solution and to find the best index to use for the loss function, but is not applicable in a real approach.
-Using the reference image, it is clear that the model will reproduce the performance and the
-behaviour of the indexes during the traning can suggest which index could be used for a real non-reference training.
 
 \begin{figure}[t]
     \centering
@@ -1049,19 +831,64 @@ behaviour of the indexes during the traning can suggest which index could be use
 \end{figure}
 
 
-All those type of training have been executed in a test image illustated with a true color representation in Fig. \ref{fig:toulouse}.
+All types of training have been executed in a test image illustated with a true color representation in Fig. \ref{fig:toulouse}.
 Toulouse dataset: An IKONOS image has been acquired over the city of Toulouse, France, in the 2000.
 The MS sensor acquires an image of 512×512 pixels in the visible and near-infrared spectrum range in 4
 different bands and with a 4m spatial sampling interval (SSI). 
 The pancromatic image is constitute by an image of 2048×2048 pixels with a 1m SSI.
 
+In general, deep learning models should not be specialized too much for the training set.
+The reason why is that the model could have worse performance for data in which the it is not trained for,
+like in the real world.
+To avoid this situation, is necessary to create a validation set for the training. The validation set is a dataset
+in which there are data that net is not trained for. Performance on the validation set are more similar to real performance.
+The validation process is described in the Fig. \ref{fig:validation}.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[scale=.5]{validation.png}
+    \caption{Validation process for RR and NOREF method}
+    \label{fig:validation}
+\end{figure}
+
+To generate a reference image for the quality assessment, MS and PAN has been downsampled.
+The original MS has been used as Ground Truth (GT).
+For the reason of brevity, the two downgraded images will be called $MS_L$ and $PAN_L$ for simplicity.
+
+At every epoch, the $PAN_L$ and $MS_L$ were used 
+to produce a fused image with the updated weights and compared with the GT.
+This means that these images constitute the validation set. 
+Reference indexes like SAM, ERGAS and Q and also no reference indexes QNR and HQNR were calculated between the output of the model and the GT.
+Those indexes has been calculated with the MatLab toolbox functions provided by \cite{criticalComparison} and MatLab engine 
+for python \cite{matlab}.
+This procedure can give a real performance assessment of the whole model.
+The training set have always better performance as the model optimize the 
+error of these data. It needs to be highlight that only the performance of the validation set are relevant. 
+
+For the training, as described in the Paragraph \ref{sec:lossfunction}, the $PAN_L$ and $MS_L$ in the RR approach are downsampled again because the model
+should have a target different from the GT.
+Training the model with the GT as target have no valid applications.
+In real world, the model would not have a GT as target.
+Additionally, the validation set would have no relevant performance because the model is just trained with the same data.
+
+It has been noticed that, for some images, the model that use the fine-tuning with the reference approach has worse performance to the original ones.
+The reason is that the model is fine-tuned with the downgrade images.
+
+The characteristics of the sensors, in general, are not scale invariance and downsampling the input does not guarantee similar performance like using the original images
+as described also in the previous chapters.
+
+In the NOREF approach, the images are not downsampled again because the model use a no-reference loss function.
+
+To compare the different methods, it was also trained the model with the GT image itself using the MSE loss function.
+The purpose is to compare the previous described methods with the best possible solution, but it is not applicable in a real approach.
 
 \section{Results}
 Using the original QNR function has not produce any positive results.
 During the training, while the error continued to be minimized, the indices calculated with the Matlab Toolbox worsened as showed in Fig.~\ref{fig:qnr1}~\ref{fig:qnr2}~\ref{fig:qnr3}, even the QNR itself.
-This because the algorithm, to minimize the error builded with the QNR developed in python, generate an image with negative values.
-An input with negative values is not expected by any of the indexes used and this create a discrepancy between the QNR developed in python and the QNR of the Matlab Toolbox.
-Indeed, the QNR developed in python and used in the loss function it was tested with regular images with values between 0 and 1 and it returned same results of the Matlab version.
+This because the model, to minimize the error, generate an image with negative values.
+An input with negative values is not expected by any of the indexes used and also by the loss function.
+This create a discrepancy between the QNR developed in tensorflow and used in the loss function and the QNR of the Matlab Toolbox.
+Indeed, with inputs having values between 0 and 1, the QNR developed in tensorflow and the Matlab one returns the same results.
 
 
 \begin{figure}[t]
@@ -1107,7 +934,7 @@ With this type of loss function it was recorded an increase in all the indexes e
 The QNR, as evidenced also by the previous results, does not seems to be a good index for the quality assessment.
 
 To explore all the possible values of q and p in the Eq.~\ref{dl}~\ref{ds}, 
-test with different values has been lauched. At the beginning with steps of 0.5 and after for particupar ranges with steps of 0.25.
+tests in different cases have been lauched. At the beginning with steps of 0.5 and after for particupar ranges with steps of 0.25.
 
 In Fig. \ref{fig:alpha_beta1} and \ref{fig:alpha_beta3}, in the legend the first argument is alpha and the second is beta.
 They are the inverse respectively of p and q. 
@@ -1131,7 +958,7 @@ The experiment conclusion was that best result are reached with alpha 0.5 and be
 
 After this experiments, all the methods have been compared and the results are available in Fig. \ref{fig:gt_rr_noref}.
 GT is the method that use the Ground Truth during the training to have the best performance,
-RR is the method used in \cite{pnn} with a reduced resolution training and the NOREF is the method
+RR is the method used in \cite{pnn} with a reduc        ed resolution training and the NOREF is the method
 implemented in this thesis with a full-resolution training and HQNR index described in the previous paragraphs. 
 
 \begin{figure}[t]
