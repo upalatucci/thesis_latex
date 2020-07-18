@@ -1,7 +1,8 @@
 def filter_image(origin_image, kernel):
     image = tf.expand_dims(origin_image, 0)
     kernel = tf.expand_dims(kernel, -1) 
-    output = tf.nn.depthwise_conv2d(image, kernel, strides=(1, 1, 1, 1), padding="VALID")
+    output = tf.nn.depthwise_conv2d(\
+        image, kernel, strides=(1, 1, 1, 1), padding="VALID")
     output = tf.squeeze(output)
     return output
 
@@ -31,6 +32,7 @@ def d_lambda(ms, fused, p, b, sensor):
   return 1 - q_index(fused_filtered, ms[R:-R, R:-R, :])
 
 def hqnr(fused, ms, pan, pan_degraded, alpha, beta, p, q, bands, sensor):
-  a = ( 1 - d_lambda_consistence(ms, fused, p=p, b=bands, sensor=sensor))**alpha
+  a = ( 1 - d_lambda(\
+      ms, fused, p=p, b=bands, sensor=sensor))**alpha
   b = ( 1 - d_s_reg(fused, pan)) ** beta
   return a*b

@@ -12,6 +12,8 @@
 \usepackage{listings}
 \usepackage{setspace}
 \usepackage{longtable}
+\usepackage{xcolor}
+\newcommand{\rr}[1]{\textcolor{red}{\textbf{#1}}}
 
 \linespread{1.75}
 
@@ -42,8 +44,7 @@
         \end{figure}
             
     \end{center}
-    Supervisors:
-
+    Supervisor: \newline
     Prof. Restaino Rocco
     
 \end{titlepage}
@@ -53,40 +54,35 @@
 \tableofcontents
 
 \chapter*{Introduction}
-Pansharpening refers to a particular data fusion issue where two images, one panchromatic and one multispectral, representing the same area can be combined to enhance the peculiarity of both. The panchromatic image is acquired with a wide spectrum sensor that can have a higher spatial resolution compared to a multispectral one. However, the sensor cannot acquire different bands. A multispectral image, instead, has several bands in a lower spatial resolution. As physical constraints occur, the creation of a sensor specialized in both resolution's type would not be possible. For this reason, the fusion of both images can be the only possibility to have a new image with higher spatial and spectral resolution. Pansharpening is an urgent topic for remote sensing, indeed, the result can be used upstream of another process such as change detection \cite{changedetection}, object recognition \cite{objectrecognition}, visual image analysis and scene interpretation \cite{sceneinterp}.
-An example of pansharpening can be observed in the Fig.~\ref{fig:pansh}.
-
-\begin{figure}[t]
-    \centering
-    \includegraphics[scale=.7]{pansharpeningexample.png}
-		\caption{Pansharpening example}
-		\label{fig:pansh}
-\end{figure}
+Pansharpening refers to a particular data fusion issue where two images, one panchromatic (PAN) and one multispectral (MS), representing the same area can be combined to enhance the peculiarity of both. The panchromatic image is acquired with a wide spectrum sensor that can have a higher spatial resolution compared to a multispectral one. However, the sensor cannot acquire different bands. A multispectral sensor, instead, collects several channels at a lower spatial resolution. As physical constraints occur, the creation of a sensor specialized in both types of resolution would not be possible. For this reason, the fusion of both images can be the only possibility to have a new image with higher spatial and spectral resolution. Pansharpening is an urgent topic for remote sensing; indeed, the result can be used upstream of another process such as change detection \cite{changedetection}, object recognition \cite{objectrecognition}, visual image analysis and scene interpretation \cite{sceneinterp}.
 
 Based on a convolutional neural network, a new pansharpening method has been proposed recently \cite{pnn}.
-Using a degraded version of the PAN and MS images, the network's weights were trained to fuse the images, optimizing a reference index with the gradient descendent algorithm: the mean squared error. After the training, the same weights were applied to fuse the original PAN and MS images.
-The purpose of this work is to improve the current methodology using the original PAN and MS images for a training with a no-reference index like QNR or HQNR indexes. Furthermore, the intention is to remove the error added using the degraded images that do not reflect the models were the pansharpening algorithm should be utilised.
-In \cite{pnn} the code was written in python 2.7 using the Theano library. The Theano project has been not updated since 2018 \cite{theanorip}. For this reason, the project is incompatible with new Cuda libraries and NVIDIA drivers and many issues to run the training process on the GPU have been founded. To solve that, a new software has been created using TensorFlow. Tensorflow is a more modern and popular DeepLearning library maintained by Google that allow more compatibility with the newest libraries and a larger community helping the development in case of uncommon errors. As Theano does, Automatic Differentiation has been implemented by the new library \cite{tensorflowautoderiv}. Indeed, Automatic Differentiation can be defined as critical feature that allows writing differentiable functions and subsequently using them for the core algorithm of the neural network's backpropagation training: the gradient descendent algorithm. 
+Using degraded versions of the PAN and MS images, the network weights were trained to fuse the images, optimizing a reference index with the gradient descendent algorithm: the mean squared error. After the training, the same weights were applied to fuse the original PAN and MS images.
 
+The purpose of this work is to improve the current methodology using the original PAN and MS images for a training with a \textit{no-reference} index like Quality with no reference (QNR) or hybrid QNR (HQNR) indexes. Furthermore, the intention is to remove the error added using the degraded images that do not reflect the models were the pansharpening algorithm should be utilised.
+In \cite{pnn} the code was written in python 2.7 using the Theano library. The Theano project has been not updated since 2018 \cite{theanorip}. For this reason, the project is incompatible with new Cuda libraries and NVIDIA drivers and many issues to run the training process on the GPU have been founded. To solve that, a new software has been created using TensorFlow. Tensorflow is a more modern and popular Deep Learning library maintained by Google that allows more compatibility with the newest libraries and a larger community, helping the development in case of uncommon errors. 
+Moreover, Tensorflow implements the \emph{automatic differentiation} \cite{tensorflowautoderiv}, a critical feature for this research. \emph{Automatic differentiation} allows writing differentiable functions and subsequently using them for the core algorithm of the neural network's backpropagation training: the gradient descendent algorithm. 
 
 \chapter{Pansharpening state of the art}
 
 
-According to the current methodology, the pansharpening techniques are divided into two main areas: component substitution (CS) and the multiresolution analysis (MRA). The techniques belonging to the first class consist in representing the MS and PAN in a different domain that can entirely split the spatial information from the spectral information. In this domain, the spatial information part of the MS image can be replaced with the PAN image. After this substitution, the MS image can be back-transformed in the original domain. Clearly, the less the PAN is correlated with the replaced component, the more distortion is introduced. The most famous techniques of this class are intensity-hue-saturation (IHS) \cite{ihs1} \cite{ihs2}, in which the images are represented in the IHS domain, principal component analysis (PCA) \cite{scaleinvariance1} \cite{pca2} and Gram-Schmidt (GS) spectral sharpening \cite{gs}. On the one side, those techniques preserve the PAN spatial information. On the other side they can produce a high spectral distortion. This is because PAN and MS are obtained in spectral ranges that only partially overlap. 
+According to the existing literature, the pansharpening techniques are divided into two main areas: component substitution (CS) and multiresolution analysis (MRA). The techniques belonging to the first class consist in representing the MS and PAN in a different domain that can entirely split the spatial information from the spectral information. In this domain, the spatial information part of the MS image can be replaced with the PAN image. After this substitution, the MS image can be back-transformed in the original domain. Clearly, the less the PAN is correlated with the replaced component, the more distortion is introduced. The most famous techniques of this class are intensity-hue-saturation (IHS) \cite{ihs1, ihs2}, in which the images are represented in the IHS domain, principal component analysis (PCA) \cite{scaleinvariance1, pca2} and Gram-Schmidt (GS) spectral sharpening \cite{gs}. On the one side, those techniques preserve the PAN spatial information. On the other side they can produce a high spectral distortion. This is because PAN and MS are obtained in spectral ranges that only partially overlap. 
 
-The second class of techniques, MRA, are based on the introducing of spatial details extracted from the PAN image into the up-sampled version of the MS. This approach promises a better spectral fidelity but often present spatial distortions.
+The second class of techniques, MRA, are based on the introduction of spatial details, extracted from the PAN image through a multgiscale decomposition, into the up-sampled version of the MS. This approach promises a better spectral fidelity but often present spatial distortions.
 
 The lack of the reference image is the principal issue in the evaluation of the pansharpening methods.
 When a couple of images are fused, the result cannot be compared with anything else. The sensors used for the acquisition cannot reach alone both spatial and spectral resolution of the result. As the two models are different, the result cannot be compared with another image acquired with a different sensor.
 For this reason, there is no universal measure of quality for the pansharpening. The scientific community common practice is to use the verification criteria that were proposed in the most credited work \cite{towaldetal}. This study defines two properties to use for the evaluation of the fused product: consistency and synthesis. The first means that the original MS image should be obtained with a degradation of the fused result.
-The second property describe that the fused image should preserve both the features of each band and the mutual relations among them. The definition of an algorithm that accomplishes these properties and of an index that can guarantee the correct evaluation are an open problem. But, no matter what index is decided to use, the unavailability of a reference image is a huge problem and a visual inspection is always mandatory. There are two techniques that can be used for the quality assessment. The first is to reduce both the images given in input to the pansharpening algorithm and use the original MS image as a reference for the result evaluation. The downside of this method is the assumption of invariance between scales, which justifies that the same algorithm operates similarly at reduced scale. The cited hypothesis  is not always verified as documented here \cite{scaleinvariance1} \cite{towaldetal}. A second technique is the use of an index that does not require a reference image.
+The second property describe that the fused image should preserve both the features of each band and the mutual relations among them. The definitions of an algorithm that accomplishes these properties and of an index that can guarantee the correct evaluation are an open problem. But, no matter what index is decided to use, the unavailability of a reference image is a huge problem and a visual inspection is always mandatory. 
+
+Accordingly, there are two techniques that can be used for the quality assessment. The first is to degrade both the images given in input to the pansharpening algorithm and use the original MS image as a reference for the result evaluation. The downside of this method is the assumption of invariance between scales, which justifies that the same algorithm operates similarly at reduced scale. The cited hypothesis  is not always verified as documented in \cite{scaleinvariance1, towaldetal}. A second technique is the use of an index that does not require a reference image.
 
 
 \section{CS}
 
 The CS family is based on converting the MS image into a domain in which the spatial and spectral pieces of information can be better separated. In this domain, the component containing the spatial information can be replaced by the PAN image. The greater the correlation between the PAN image and the replaced component, the lower the distortion introduced by the fusion. For this reason, the histogram matching of the PAN with the component that contains the spatial part of the MS information is preliminarily performed.
-After the substitution, the data can be represented in the original space with an inverse transformation. This approach is applied to the whole image in the same way. Techniques of this category have high fidelity regarding the fusion of spatial details and are fast and easy to implement. But as the acquisition spectrum of the sensors used to produce the PAN and MS image differ each other, the process may produce significant spectral distortions \cite{cs1} \cite{cs2}. 
-In the studies \cite{cs3} \cite{cs4} \cite{cs5} \cite{cs6} \cite{cs7}, it was shown that, when a linear transformation is used, the substitution and fusion can be obtained without the explicit forward and backward transformation of the images but with a precise injection scheme. This scheme can be formalized according to the following equation:
+After the substitution, the data can be represented in the original space with an inverse transformation. This approach is applied to the whole image in the same way. Techniques of this category have high fidelity regarding the fusion of spatial details and are fast and easy to implement. But as the acquisition spectrum of the sensors used to produce the PAN and MS image differ each other, the process may produce significant spectral distortions \cite{cs1,cs2}. 
+In the studies \cite{cs3,cs4,cs5,cs6,cs7}, it was shown that, when a linear transformation is used, the substitution and fusion can be obtained without the explicit forward and backward transformation of the images but with a precise injection scheme. This scheme can be formalized according to the following equation:
  %
 \begin{equation}
     \widehat{MS_k} = \widetilde{MS_k} + g_k(P - I_L), \qquad k = 1,\dots,N
@@ -116,7 +112,7 @@ The CS approach procedure is illustrated in  Fig.~\ref{fig:csapproach}. Four imp
 
 The various CS techniques such as IHS \cite{ihs1,ihs2}, PCA \cite{pca2,changedetection} and GS \cite{gs,cs3} define different $w_{k,i}$ and $g_k$.
 
-In the IHS pansharpening method is used the IHS transformation. This is the major limitation of this technique because it can transform only images in RGB and often the MS image has 4 or also 8 and more bands. As a workaround, the authors of paper \cite{cs6} has proved that GIHS, a generalization of the IHS transformation for more bands, can be formulated for any arbitrary set of nonnegative spectral weights as described in the following equation: 
+In the IHS pansharpening method the IHS transformation is used. This is the major limitation of this technique because it can transform only RGB images and often the MS image has 4 or also 8 and more bands. As a workaround, the authors of paper \cite{cs6} has proved that GIHS, a generalization of the IHS transformation for more bands, can be formulated for any arbitrary set of nonnegative spectral weights as described in the following equation: 
 %
 \begin{equation}
     \widehat{MS_k} = \widetilde{MS_k} + \left(\sum_{i=1}^{N}w_i\right)^{-1}(P - I_L), \qquad 
@@ -125,6 +121,7 @@ In the IHS pansharpening method is used the IHS transformation. This is the majo
 \end{equation}
 %
 in which $w_i$ are all equal to $1/N$ \cite{ihs1}.
+
 With the injection gains defined such that:
 \begin{equation}
     g_k = \frac{\widetilde{MS_k}}{I_L}, \qquad k = 1,\dots,N
@@ -137,12 +134,12 @@ $\widehat{MS_k}$ can be calculated as
     \label{csfinal}
 \end{equation}
 %
-which is the known Brovey Transform. 
+which is the well-known Brovey Transform. 
 
-In the PCA pansharpening method, it is used the PCA transformation, also called Karhunen-Loeve transform. It is a linear transformation that can be implemented for a multidimensional image, so it is not limited as the IHS method, and consists into the projection of all the components along the eigenvectors of the covariance matrix. This means that each component is orthogonal and statistically uncorrelated from the others. The hypothesis introduced in this step is that the spatial information is concentrated in the first component, the component with the higher eigenvalue. The PCA can be implemented by using Eq.~\ref{cs}, in which $w$ is the first row of the forward transformation matrix; $g$ is the first column of the backward transformation matrix.
+In the PCA pansharpening method, it is used the PCA transformation, also called Karhunen-Loeve transform. It is a linear transformation that can be implemented for a multidimensional image, so it is not limited as the IHS method, and consists into the projection of all the components along the eigenvectors of the covariance matrix. This means that each component is orthogonal and statistically uncorrelated from the others. The hypothesis introduced in this step is that the spatial information is concentrated in the first component, the component with the larger eigenvalue. The PCA can be implemented by using Eq.~\ref{cs}, in which $w$ is the first row of the forward transformation matrix; $g$ is the first column of the backward transformation matrix.
 
 The GS transformation is a common technique used to orthogonalize a set of vectors in linear algebra.
-First of all, the $\widetilde{MS}$ bands are organized in vectors to obtain a two dimensional matrix in which the columns are constituted by the bands organized as vectors. The mean of each band is subtracted from all the columns. The orthogonalization procedure is used to create a low-resolution version of the PAN image, i.e. $I_L$.  The last step is the replacement of $I_L$ with the histogram matched PAN before the inverse transformation. GS is a generalization of PCA in which PC1 may be any component and the remaining ones are calculated to be orthogonal with PC1. Also the GS procedure can be described by Eq.~\ref{cs} if $g_k$ is defined as:
+First of all, the $\widetilde{MS}$ bands are organized in vectors to obtain a two dimensional matrix in which the columns are constituted by the bands organized as vectors. The mean of each band is subtracted from all the columns. The orthogonalization procedure is used to create a low-resolution version of the PAN image, i.e., $I_L$.  The last step is the replacement of $I_L$ with the histogram matched PAN before the inverse transformation. GS is a generalization of PCA in which PC1 may be any component and the remaining ones are calculated to be orthogonal with PC1. Also the GS procedure can be described by Eq.~\ref{cs} if $g_k$ is defined as:
 %
 \begin{equation}
     g_k = \frac{\operatorname{cov}(\widetilde{MS_k}, I_L)}{\operatorname{var}(I_L)} , \qquad k = 1,\dots,N
@@ -152,14 +149,13 @@ First of all, the $\widetilde{MS}$ bands are organized in vectors to obtain a tw
 in which $\operatorname{cov}(\cdot,\cdot)$ is the covariance between two images and $\operatorname{var}(\cdot)$ is the variance.
 There are several version of this technique that differ on how the $I_L$ is
 created. The simplest way is to set $w_i = 1/N$. This version is called 
-GS mode 1~\cite{gs}. It was proposed also an $adaptive$ version of this mode 
-called GSA in~\cite{cs3} in which $I_L$ is generated by a weighted average of 
+GS mode 1~\cite{gs}. In~\cite{cs3}, also an $adaptive$ version of this mode was proposed. It is called GSA and the $I_L$ is generated by a weighted average of 
 the MS bands. Another technique defined in \cite{gs} and called GS mode 2 
 suggests to generate the $I_L$ by applying a low pass filter to the PAN image. 
 This last step leads the GS mode 2 that belongs to the MRA class of techniques.
 
-Another noteworthy technique is described in \cite{cs7} that introduces the concept of 
-\textit{partial replacement } of the intensity component. An intensity
+Another noteworthy technique is described in \cite{cs7} and introduces the concept of 
+\textit{partial replacement} of the intensity component. An intensity
 image is created  for every band of the MS from the PAN image; it is calculated with the following equation:
 %
 \begin{equation}
@@ -186,7 +182,7 @@ that removes the local spectral instability error between the synthetic componen
 and the MS band defined as:
 %
 \begin{equation}
-    L_k = 1 - |1 - CC(I_L, \widetilde{MS_k})\frac{\widetilde{MS_k}}{P_L^{(k)}}|.
+    L_k = 1 - \left|1 - CC(I_L, \widetilde{MS_k})\frac{\widetilde{MS_k}}{P_L^{(k)}}\right|.
     \label{lk}
 \end{equation}
 %
@@ -241,7 +237,7 @@ As explained above, the lack of a reference image is the main limitation. The co
 procedures as a workaround. The first procedure consists in using the images at a lower spatial 
 resolution and use the original MS image as a reference. However, the output of an algorithm can have 
 different performance at different scales, as it is showed in~\cite{perfdiffscale}.
-This because the performance assessment depends intrinsically to the image scale, 
+This happens because the performance assessment depends intrinsically on the image scale, 
 mostly in case of pansharpening methods that apply spatial filters.
 The second procedure consists in using non-reference quality indexes. 
 Both types of procedures require also a visual inspection for spectral distortions and spatial details.
@@ -259,9 +255,9 @@ For a reduced-resolution assessment, the filter choice for the downsampling is c
 A bad filter choice results in an image degradation that does not reflect the 
 sensor characteristics at a lower scale. So the algorithm, after the degradation, is applied to
 images that reflect the wrong sensor model. This means that the same algorithm can have a more different result at the original and lower scales. On the contrary, with a good filter that preserves the sensor characteristics at the lower resolution, the algorithm has much more possibility to reflect the quality of the original resolution.
-Indeed, the filter used for the MS degradation should simulating the transfer function of the remote sensor and so, it should match the sensor's MTF~\cite{mtfsensor}. 
+Indeed, the filter used for the MS degradation should simulate the transfer function of the remote sensor and so, it should match the sensor's MTF~\cite{mtfsensor}. 
 Similarly, the PAN image has to be degraded in order to contain the details that would have been seen if the image were acquired at the reduced resolution.
-The fused image obtained from the degraded PAN and MS, can be evaluated different indexes using the MS as a reference image.
+The fused image obtained from the degraded PAN and MS, can be evaluated by means of different indexes using the MS as a reference image.
 
 The Spectral Angle Mapper (SAM) is a vector measure that is useful to evaluate the spectral distortion.
 In simple terms, denoting by $I_{(n)} = [I_{1,{n}}, \dots , I_{N,{n}}]$ a pixel vector of the MS image, with $N$ bands,
@@ -277,7 +273,7 @@ Applying this equation to every pixel results in a so-called SAM map.
 Averaging all the pixel of the SAM map returns the SAM index for the whole image.
 The optimal value of the SAM index is 0.
 
-RMSE is used to calculate the spatial/radiometric distortions.
+Root Mean Square Error (RMSE) is used to calculate the spatial/radiometric distortions.
 It is defined as:
 %
 \begin{equation}
@@ -285,9 +281,11 @@ It is defined as:
     \label{rmse}
 \end{equation}
 %
+where $E[]$ is the arithmetic mean.
 The ideal value of RMSE is zero and is achieved if and only if $I = J$.
 But it is not an efficient index because it is not considered the error for each band, but is global.
-So, to better measure the error for each band, the ERGAS index is used. 
+So, to better measure the error for each band, the Erreur Relative Globale
+Adimensionnelle de Synthèse (ERGAS) is used. 
 The ERGAS index evaluates the RMSE error with a different weight for each band.
 %
 \begin{equation}
@@ -295,7 +293,7 @@ The ERGAS index evaluates the RMSE error with a different weight for each band.
     \label{ergas}
 \end{equation}
 %
-Obviously, the ERGAS is composed of a sum of RMSE, so the optimal value is also 0.
+Obviously, the ERGAS is composed of a sum of RMSEs, so the optimal value is also 0.
 Another important index is the Universal Image Quality Index (UIQI) or also called Q-index, proposed in \cite{uiqi}.
 Its expression is:
 %
@@ -312,7 +310,7 @@ The Q-index varies in the range $[-1, 1]$ with 1 as the optimal value.
 
 
 Q4 is an extension of the UIQI for images with 4 bands \cite{q4}. 
-Let $a$, $b$, $c$ and $d$ denote the radiance values of the given image pixel in four bands, and let the quaternions:
+Let $a$, $b$, $c$ and $d$ denote the radiance values of the given image pixel in four bands, and construct the quaternions:
 %
 \begin{equation}
     z_A = a_A + ib_A + jc_A + kd_A
@@ -327,10 +325,11 @@ Let $a$, $b$, $c$ and $d$ denote the radiance values of the given image pixel in
 The Q4 is defined as :
 %
 \begin{equation}
-    Q4 = \frac{4 | \sigma_{z_A z_B}| \dot |z_A| \dot |z_B|}{(\sigma_{z_A}^2 + \sigma_{z_B}^2 (|z_A|^2 + |z_B|^2))}
+    Q4 = \frac{4 | \sigma_{z_A z_B}| \cdot |\bar{z_A}| \cdot |\bar{z_B}|}{(\sigma_{z_A}^2 + \sigma_{z_B}^2 (|z_A|^2 + |z_B|^2))}
     \label{q4}
 \end{equation}
 %
+where $\bar{z}$ is the complex conjugate.
 If eventually, the bands are more than 4, the Q4 can be replaced with Q average.
 
 An index used for the validation at full-resolution is the Quality with no reference (QNR) index \cite{qnr}.
@@ -348,7 +347,7 @@ The maximum theoretical value of the index is 1 and is reached when $D_\lambda$ 
 The spectral distortion is calculated with $D_\lambda$ using this equation:
 %
 \begin{equation}
-    D_\lambda = \sqrt[P]{\frac{1}{N(N-1)} \sum_{i=1}^N \sum_{j=1, j \neq i}^N |d_{i,j}(MS, \widehat{MS}|^P)}
+    D_\lambda = \sqrt[p]{\frac{1}{N(N-1)} \sum_{i=1}^N \sum_{j=1, j \neq i}^N |d_{i,j}(MS, \widehat{MS}|^p)}
     \label{dl}
 \end{equation}
 %
@@ -368,20 +367,20 @@ where $P_{LP}$ is the low-resolution PAN image at the same scale of the MS image
 Khan protocol \cite{khan} extends the consistency property of Wald's protocol.
 The pansharpened image is considered as a sum of a lowpass term plus a high pass term.
 The lowpass term is the original interpolated low resolution MS image and
-the highpass term corresponds to the spatial details extracted to the PAN and injected into the MS image.
+the highpass term corresponds to the spatial details extracted from the PAN and injected into the MS image.
 A Gaussian model of the sensor's MTF is used to build the filters. The similarity between the lowpass component and
 the original MS image can be calculated using the Q4 index or any other similarity measure for images with more bands.
-The similarity between PAN and the spatial component is measured as the average of UIQI calculated using the PAN and each band of MS.
+The similarity between PAN and the spatial component is measured as the average of UIQIs calculated using the PAN and each band of MS.
 The same similarity is calculated also between the original MS and the degraded version of the PAN.
 
 The QNR and the spectral distortion of Khan's protocol can be combined to yield another quality index, the HQNR \cite{hqnr}:
 %
 \begin{equation}
-    HQNR = (1 - D_\lambda^{(K)}) (1 - D_s) 
+    HQNR = (1 - D_\lambda^{(K)})^\alpha (1 - D_s)^\beta
     \label{hqnr}
 \end{equation}
 %
-in which $D_\lambda^{(K)}$ is :
+in which $\alpha$ and $\beta$ are coefficient tuned to weight more the spectral or the spatial distortion as in the Eq. \ref{qnr} and $D_\lambda^{(K)}$ is :
 %
 \begin{equation}
     D_\lambda^{(K)} = 1 - Q4(\widehat{M_L}, M)
@@ -390,20 +389,20 @@ in which $D_\lambda^{(K)}$ is :
 %
 The $ \widehat{M_L} $ is the fused image degraded to the resolution of the original MS image. 
 
-\newpage
+%\newpage
 
 \chapter{Pansharpening applications of Deep Learning}
 
 \section{Introduction}
 
-Early works in the field of Deep Learning have been made in the 1940s starting from the concept of Perceptron \cite{perceptron} and afterwards in the 60s with the invention
+Early works in the field of Deep Learning (DL) have been made in the 1940s starting from the concept of Perceptron \cite{perceptron} and afterwards in the 60s with the invention
 of backpropagation, the most commonly used algorithm in the present day to train a Neural Network.
 The Neural Network is a model constituted by several Perceptrons, also called neurons, that are divided into different layers with the 
 ability to learn, extract and distinguish different features from the data given into input.
 In order to obtain these capabilities, the network should be subjected to a training phase that requires an incredible amount of
 computational power.
 As in the early 60s the computers were no powerful enough and there was not a great data availability,
-Deep Learning had no reason to be implemented as today.
+DL had no reason to be implemented as today.
 
 This field of study is characterized by different phases.
 One of them, the training, is a critical phase in which the model learns from new data and can differ for the type of issues that the model should solve.
@@ -412,9 +411,9 @@ output of the prediction and the target. After that, when the error is propagate
 the weights of all the neurons would be modified so that the next prediction for the same input would be much similar to the
 target output. 
 How this error is calculated and what means "similar" is established by the loss function that calculates the error.
-The propagation use an algorithm called Gradient Descendent algorithm, that allows the network 
+The propagation uses an algorithm called Gradient Descendent algorithm, that allows the network 
 to understand how to change the weights and minimize the loss.
-In order to use the Gradient Descendent, the loss function must be differentiable so that,
+In order to use the gradient descendent, the loss function must be differentiable so that
 the gradient operator can be applied more times.
 Many layers the net have, many times the algorithm apply the gradient to the error.
 
@@ -422,7 +421,7 @@ LeCun (1989) for the first time used a backpropagation algorithm to train a neur
 
 Nowadays, the data collected through internet, the incredible amount of computational power exhibited
 by data centers and GPUs, the performance of this type of algorithm and a large number of applicative fields,
-have encouraged the growth of Machine Learning and in particular, Deep Learning. 
+have encouraged the growth of Machine Learning (ML) and in particular, DL. 
 
 
 \section{Neural Networks}
@@ -430,7 +429,7 @@ have encouraged the growth of Machine Learning and in particular, Deep Learning.
 \subsection{Perceptron}
 
 Essentially a perceptron is an element in which the output is a result of a weighted sum
-of the inputs. There is always only one output but it can be more inputs as described in the Fig.~\ref{fig:perceptron}. 
+of the inputs. There is always only one output but it can be more inputs as described in Fig.~\ref{fig:perceptron}. 
 A perceptron uses only one linear or non-linear activation function. The following paragraph will discuss what is an activation function and how it works.
 With a non-linear transfer function, perceptron can build a nonlinear plane separating data points of different classes.
 In 1969, it was proved that the perceptron itself may fail in certain simple tasks, as instance
@@ -448,16 +447,16 @@ applications, the creation of different type of layers.
 
 \subsection{Activation Function}
 
-Activation function is used to transform the weighted data (input multiplied weights) 
+The activation function is used to transform the weighted data (input multiplied by weights) 
 in outputs.
 By the use of a non-linear transformation, we create new relation between the points.
-This consent to the machine learning model to create increasingly complex features with every layer.
-Features of many layers that uses pure linear transformations can be reproduced by a single 
-layer that use a non-linear function. 
-Most common activation functions is the so called ReLu that
-can be described as $y = max(0, x)$. The gradient is always x when the value of x is positive, 
+This consents to the ML model to create increasingly complex features with every layer.
+Features of many layers that use pure linear transformations can be reproduced by a single 
+layer that uses a non-linear function. 
+The most common activation function is the so called ReLu that
+can be described as $y = max(0, x)$. The gradient is always $x$ when the value of $x$ is positive, 
 and 0 when negative. This means that during the training, negative gradients will not update the weights.
-A Gradient with equal 1 means that the training will be much faster compared with other activation functions
+A gradient equal to 1 means that the training will be much faster compared with other activation functions
 like logistic sigmoid.
 
 \subsection{Layers}
@@ -469,23 +468,25 @@ like logistic sigmoid.
     \label{fig:multilayer}
 \end{figure}
 
-The DL network can have different type of layers that differ in how the perceptrons inside them are organized and 
+The DL network can have different type of layers that differ in how the perceptrons are organized and 
 how they modify their weights during the training. 
-The Fig.~\ref{fig:multilayer} shows an example of multilayer model.
+Fig.~\ref{fig:multilayer} shows an example of a multilayer model.
 The first experimented layer was the dense layer where all neurons are connected
 with all neurons of the next layer. Every neuron has his own weights
-and considerin all the neurons connections, this type of layer generates promptly a large number of weights.
-It will be  necessity a large
+and considering all the neurons connections, this type of layer generates promptly a large number of weights.
+This requires a large
 dataset and a longe time for the training. 
 
 The convolutional layer gave an important improvement in computer vision applications. This layer can apply different filters to the data at the same time.
 
 Commonly, several convolutional layers at the start of a neural network are used to extract features from an image. 
-On a first phase The DL model is able to extract features in the data as complex as the model dimension growth as the Fig.~\ref{fig:featuresextract} shows.
+On a first phase the DL model is able to extract features in the data with complexity that grows with the model dimension, as the Fig.~\ref{fig:featuresextract} shows.
 In a second phase, the features can be analyzed by different layers, for instance dense layers can elaborate features for classification or for other tasks.
-The filters weights of the convolutional layer are learned in the training and applied to the whole input where the neurons share the same weights. 
-For this reason, respect to a dense layer, the convolutional layer has a lower weights count,  is much faster to train and allocate a minor amount of memory.
-LSTM and GRU layers were created to allow the model to recognize patterns among a sequence of data such as video or audio.
+The filter weights of the convolutional layer are learned in the training and applied to the whole input where the neurons share the same weights. 
+For this reason, respect to a dense layer, the convolutional layer has a lower weights count, is much faster to train and allocates a minor amount of memory.
+
+To recognize patterns among a sequence of data such as video or audio, Long short-term memory (LSTM)  and Gated Recurrent Unit (GRU) are used
+ad, unlike standard layers, have feedback connections that allow the model to memorize data for subsequent inputs.
 Other layers like the pooling layer, max-pooling layer and dropout were created to optimize the training.
 
 
@@ -499,15 +500,15 @@ Other layers like the pooling layer, max-pooling layer and dropout were created 
 
 \section{The Deep Learning Paradigm}
 
-Deep Learning is a subfield of Machine Learning focalized in the study of deep neural networks.
-The model architecture is made in such a way to extract features from the data and after lean from them.
-This is the main difference between the Deep Learning and other Machine Learning techniques.
-Other Machine Learning techniques are focused on learning from handcrafter features.
+DL is a subfield of ML focalized in the study of deep neural networks.
+The model architecture is made in such a way to extract features from the data and recognize patterns from them.
+This is the main difference between the DL and other ML techniques.
+Other ML techniques are focused on learning from handcrafter features.
 The extraction process of this features should be tuned for the specific data structure and 
-require a high knowledge of particular context.
+requires a high knowledge of the particular context.
 
-In DL, the net is trained also for features extraction, but it require a more complex architecture.
-The Fig. \ref{fig:dl-architecture} propose a structure of a DL model. 
+In DL, the net is trained also for feature extraction, but it require a more complex architecture.
+Fig. \ref{fig:dl-architecture} illustrates a structure of a DL model. 
 
 \begin{figure}[t]
     \centering
@@ -517,23 +518,24 @@ The Fig. \ref{fig:dl-architecture} propose a structure of a DL model.
 \end{figure}
 
 Moreover, it gave a strong impulse to the development of very efficient algorithms in the computer vision field. 
-Indeed, nowadays there are a lot of tools that simplifies the use of complex models trained to 
-recognize hundreds of objects in an image. The so called fine-tuning technique allows net to recognize a different set of objects.
+Indeed, nowadays there are a lot of tools that simplify the use of complex models trained to 
+recognize hundreds of objects in an image. 
 
-The purpose of fine-tuning is to reset the weights of final layers in a way that the model from the same features extracted, can accomplish another task.
-With this technique it will be just necessary train final layers instead of the entire model for days and using large datasets.
+The so called fine-tuning technique allows net to recognize a different set of objects.
+The purpose of fine-tuning is to reset the weights of final layers in a way that the model learned on some given features, can accomplish another task.
+With this technique it will be just necessary to train final layers instead of the entire model for days and using large datasets.
 
 
 \section{Pansharpening Applications}
 
-Recently a new pansharpening method based on a convolutional neural network has been proposed \cite{pnn}.
+Recently, a new pansharpening method based on a convolutional neural network has been proposed \cite{pnn}.
 To accomplish that, it has been specialized a network built for super-resolution \cite{superesolution}.
-From that model, other three different models has been assested for GeoEye1, IKONOS and WorldView2 sensors
-with the aim of predict the sensor characteristics and give better performance. 
+From that model, other three different models have been tuned for GeoEye1, IKONOS and WorldView-2 sensors
+with the aim of predicting the sensor characteristics and giving better performance. 
 
 An important issue in this field is that it is difficult to found good images because of the high cost for high-resolution images.
-For this reason, it cannot be possible train deep network. The choice of the authors was to use three convolutional layers, illustated in Fig.~\ref{fig:dl-pnn}.
-The advantage of using only convolutional layers is that the input can have differente sizes.
+For this reason, it cannot be possible to train deep network. The choice of the authors was to use three convolutional layers, illustrated in Fig.~\ref{fig:dl-pnn}.
+The advantage of using only convolutional layers is that the input can have different sizes.
 
 \begin{figure}[t]
     \centering
@@ -543,8 +545,8 @@ The advantage of using only convolutional layers is that the input can have diff
 \end{figure}
 
 The training phase showed in Fig.~\ref{fig:pnn-training} uses a reference approach in which the images are downsampled and fused. 
-After the downgrande, the $P_L$ image is attached to the MS downgraded in order to provide input to the model.
-The MSE error between MS and the fused image would be calculated and this error will be used for the training of the weights.
+After the downgrande, the $P_L$ image is attached to the downgraded MS in order to provide input to the model.
+The MSE error between the original MS and the network output would be calculated and this error will be used for the training of the weights.
 
 \begin{figure}[t]
     \centering
@@ -554,18 +556,18 @@ The MSE error between MS and the fused image would be calculated and this error 
 \end{figure}
 
 Radiometric relevant indexes has been used to improve the results \cite{pnn}. 
-It was showed that the network avoids learning the indexes provided with more focus on other information.
+It was showed that the network avoids learning the indexes provided.
 Another important step introduced in \cite{pnn2} was to run a fast session of fine-tuning before the 
 application of the model.
-With the fine-tuning, the net can learn how to fuse the input in a downgraded version
-and after apply the prediction in the original images with better results.
-However, as described in the conclusion of \cite{pnn2}, performance in downsampling domain is
-not as much relevante as no-reference measures that have a major impact to performance.
+With the fine-tuning, the net can specialize the weights for the specific environment described by the downgraded image
+and after realize on the original images, the fusion with better results.
+However, as described in the conclusions of \cite{pnn2}, performance with this approach is
+not as much relevant as \textit{no-reference} approach that have a major impact to performance.
 Another important disadvantage of the method is that when the model works with misaligned images 
 it is trained with images that have a fraction of the misalignment depending on the scale ratio between PAN and MS. 
 
 In another paper \cite{residualpnn}, the authors has tried different structures and strategies to improve the network released in \cite{pnn}.
-An important result was achived with a residual version of the original network.
+An important result was achieved with a residual version of the original network.
 The structure is showed in Fig. \ref{fig:residual-architecture}.
 
 \begin{figure}[t]
@@ -586,13 +588,13 @@ The residual version was not trained to reproduce the whole image,
 but just the high-pass component. Indeed, the low-pass component is represented by the 
 multispectral image provided by input. This means that the network reconstructs just the missing parts.
 
-Residual-based structures were used in different papers ( \cite{residual1} and \cite{residual2}), in particular in the deep learning in \cite{residual3} and \cite{residual4}.
+Residual-based structures were used in different papers (\cite{residual1, residual2}), in particular in the DL in \cite{residual3, residual4}.
 
 As overall, it was observed that it is easier to train a neural network for differences
 instead of reproducing an ouput really similar to the input. 
 
 
-Results of \cite{residual4} are indicated in Fig. \ref{fig:residual-comparison}.
+The main results of \cite{residual4} are shown in Fig. \ref{fig:residual-comparison}.
 
 \newpage
 
@@ -600,72 +602,90 @@ Results of \cite{residual4} are indicated in Fig. \ref{fig:residual-comparison}.
 
 \section{Introduction}
 
-The aim of this chapter is to discuss and evaluate the difference between the training of the reduced resolution approach in \cite{pnn}
-and the training of the no-reference approach developed in the research.
-The analysis will cover the Automatic Differentiation and the implementation in Tensorflow.
+The aim of this chapter is to discuss and evaluate the difference between the training of the reduced resolution approach proposed in \cite{pnn}
+and the training of the \textit{no-reference} approach developed in the research.
+The analysis will cover the \textit{automatic differentiation} and the implementation in Tensorflow.
 
 \section{Loss Function Issue}
 \label{sec:lossfunction}
-To assest the training set for the reduced resolution method ( also called RR) described in \cite{pnn} ,
-the algorithm synthetized in the Fig. \ref{fig:rrtraining} has been implemented.
+To assess the training set for the \textit{reduced resolution} (RR) method  described in \cite{pnn},
+the algorithm synthesized in the Fig. \ref{fig:rrtraining} has been implemented.
 
 Both PAN and MS are downsampled into two images called $MS_L$ and $PAN_L$.
 The $MS_L$ is upsampled to match the $PAN_L$ size.
-The images represent the input of the model that compute the eror by the use of MS.
+The images represent the input of the model that compute the error by the use of MS.
+To update the model weights, a learning rate scheduler is used: the SGD \cite{sgd}.
+A learning rate scheduler consent to modify the learning rate during the training
+in order to optimize performance and reach easier the minimum error.
+Other details about learning rate and learning rate scheduler can be find in the paragraph \ref{description}
 
-Instead of this procedure, the reseachers decided to use the no-reference approach (NOREF) illustrated in Fig. \ref{fig:noreftraining}.
+Instead of this procedure, we decided to use the \textit{no-reference} approach (NOREF) illustrated in Fig. \ref{fig:noreftraining}.
 As the figure shows, the images are not downsampled. The great advantage is that 
-the model is trained with origianl images and not with the downgraded version.
+the model is trained with original images and not with the downgraded version.
 Also in this case, the MS is upsampled to match the PAN size.
 Without the upsampling, it will not be possible to stack the images and apply the 3D filters of the convolutional layers.
 
 In this case, the loss function does not use a target.
-This is because the model is trained with the images at the higher possible resolution.
-Indeed, the loss computation is done using a no-reference index.
-For this reason, this approach belong into the Unsupervised Learning field.
-Opposite to Supervised Learning, Unsupervised learning is a subfield of Machine Learning where the training process is not leaded by a target.
+This is because the model is trained with the images at the highest possible resolution.
+Indeed, the loss computation is done using a \textit{no-reference} index.
+For this reason, this approach belong into the \textit{unsupervised learning} field.
+Oppositely to \textit{supervised learning}, unsupervised learning is a subfield of ML where the training process is not leaded by a target.
 
 
 
 \begin{figure}[t]
     \centering
-    \includegraphics[scale=.35]{RRTraining.png}
-    \caption{Graph of the training algorithm released by \cite{pnn}}
+    \includegraphics[scale=.45]{RRTraining.png}
+    \caption{Graph of the training algorithm released by \cite{pnn}.}
     \label{fig:rrtraining}
 \end{figure}
 
 \begin{figure}[t]
     \centering
-    \includegraphics[scale=.35]{NOREFTraining.png}
-    \caption{Graph of the training algorithm developed}
+    \includegraphics[scale=.45]{NOREFTraining.png}
+    \caption{Graph of the training algorithm developed.}
     \label{fig:noreftraining}
 \end{figure}
 
 
 
 \section{Automatic Differentiation}
-Automatic differentiation is a set of techniques to efficiently calculate the gradient of a function with a computer.
+\textit{Automatic differentiation} is a set of techniques to efficiently calculate the gradient of a function by a computer.
 Every computer program executes a sequence of elementary operations.
-There are different kind of techniques to differentiate a function: Automatic Differentiation, Numerical Differentiation and Symbolic Differentiation.
-Numerical differentiation is the standard definition of a derivative.
+There are different kind of techniques to differentiate a function: \textit{automatic differentiation}, \textit{numerical differentiation} and \textit{symbolic differentiation}.
+The Fig. \ref{fig:differentiations} shows an example of all techniques that
+evaluate the derivative of the same function. 
+The various approach would be described.
+
+\textit{Numerical differentiation} is the finite approximation of the derivatives.
 \begin{equation}
-    \frac{df(x)}{dx} = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}
+    \frac{df(x)}{dx} \approx \frac{f(x+h) - f(x)}{h}
+    \label{numdiff}
 \end{equation}
 %
+In this technique, the computer evaluate the function described in Eq. \ref{numdiff}
+at some sample points.
 As described in \cite{autodiff}, this type of differentiation is easy to code.
-However, the $O(n)$ cost of the evaluation is so high
-that Machine Learning, where n can be millions or also billions, would not be accessible.
+However, the $O(n)$ cost of the evaluation in $n$ dimensions is so high
+that ML, where $n$ can be millions or also billions, would not be accessible.
 
-Symbolic differentiation is a technique that use the chain rule, product rule and other rules to 
-split the expression in known derivative primitive to obtain result.
+\textit{Symbolic differentiation} is a technique that uses the chain rule, the product rule and other rules to 
+split the expression in known primitive derivative to obtain the result.
+The Eq. \ref{symbolicdiff} shows how product rule and sum rule are applied.
+%
+\begin{equation}
+    \begin{array}{l}
+    \frac{d}{dx} (f(x) + g(x)) = \frac{d}{dx} f(x) + \frac{d}{dx}g(x) \\
+    \frac{d}{dx} (f(x)g(x)) = \left(\frac{d}{dx} f(x)\right) g(x) + f(x)\left(\frac{d}{dx}g(x)\right)
+    \end{array}
+    \label{symbolicdiff}
+\end{equation}
+Techniques that belong to this class are really difficult to convert into a computer programs.
 
-Symbolic differentiation is inefficient in terms of performance. The complexity can be, in a lot of cases, exponential.
-Furthermore, techniques that belong into this class are really difficult to convert into a computer programs.
+\textit{Automatic differentiation} systems explicitly split the operations in simplier ones and build a computation graph.
+Each node of the graph have some attributes like values, primitive operations and parents.
 
-Automatic differentiation systems explicitly split the operations in a simplier ones and build a computation graph.
-Each node of the graph have some attributes like value, primitive operation and parents.
-
-Jacobian matrixes are used to represente the derivative of each output y with respect to each input x.
+Jacobian matrixes are used to represent the derivative of each output $y$ respect to each input $x$ of a graph node.
 
 \begin{equation}
     J_f = \begin{bmatrix} 
@@ -675,36 +695,41 @@ Jacobian matrixes are used to represente the derivative of each output y with re
         \end{bmatrix}
 \end{equation}
 %
-For each primitive operation, it must be defined a Vector-Jacobian Product (VJP). 
+For each primitive operation, it must be defined a \textit{Vector-Jacobian Product} (VJP). 
 Combining all the VJP nodes, the result would be the value of the gradient.
 
-Automatic differentiation provide different modes like Forward mode and Reverse mode.
-In Forward mode, automatic differentiation and symbolic differentiation are equivalent as described in this paper \cite{auto_symbol}.
+\begin{figure}[t]
+    \centering
+    \includegraphics[scale=.4]{differentiations.png}
+    \caption{Example with all type of differentiation \cite{autodiff}}
+    \label{fig:differentiations}
+\end{figure}
+
+\textit{Automatic differentiation} provide different modes like \textit{forward mode} and \textit{reverse mode}.
+In forward mode, \textit{automatic differentiation} and \textit{symbolic differentiation} are equivalent, as described in the paper \cite{auto_symbol}.
 They both apply the chain rule and other differentiation rules and actually create expression graphs.
 However, the first one was created specifically for the computer manipulation and includes numerical values. 
-The second one, symbolic differentiation, operates on mathematical expressions and symbols.
-Indeed, the automatic differentiation can handle also control flow statements like "if", "while" and "loops".
+Indeed, the \textit{automatic differentiation} can handle also control flow statements like "if", "while" and "loops".
+The second one, \textit{symbolic differentiation}, operates on mathematical expressions and symbols.
 
 \section{Tensorflow and custom loss function implementation}
-Tensorflow is the most famouse machine learning and deep learning tool that implement the automatic differentiation.
-To build a custom loss function, Tensorflow provide APIs. This APIs, define all the operations betweens Tensors that are the basic datatype in Tensorflow.
+Tensorflow is the most famous ML and DL tool that implements the \textit{automatic differentiation}.
+To build a custom loss function, Tensorflow provide APIs. These APIs define all the operations betweens Tensors that are the basic datatype in Tensorflow.
 The Tensorflow APIs used in the research code are showed in the Table \ref{tab:tensorflowapi}.
-The external package tensorflow probability APIs used are showed in the Table \ref{tab:tensorflowprobability}.
+The external package \textit{tensorflow probability} APIs used are showed in the Table \ref{tab:tensorflowprobability}.
 
-After the definition of the custom loss function, at runtime Tensorflow translate the python code in C/C++ for efficience purpouse, compile it, and build the computation graphs.
-Also, tensorflow from a couple of years integrate on it Keras, another framework that simplify the creation of the model with 
-all common layers well-defined into Classes.
-To create a model it is necessary to create a $Model$ class.
-It is possible to add a layer using $model.add(Layer(args))$.
-$Layer$ is the corresponding class of the layer and args are the arguments like the input shape, the number of filters the layer should have. 
-Firstly, using such a widespread framework has the advantage of a large community that support difficult situations;
-secondly it will be a larger compatibility on Operating Systems, GPUs and hardware in general.
+After the definition of the custom loss function, at runtime Tensorflow translate the python code in C/C++ for efficiency purpose, compile it, and builds the computation graphs.
+Also, Tensorflow for a couple of years, integrate on it Keras, another framework that simplify the creation of the model with 
+all common layers well-defined into \texttt{Classes}.
+To create a model it is necessary to create a \texttt{Model} class.
+It is possible to add a layer using \texttt{model.add(Layer(args))}.
+\texttt{Layer} is the corresponding class of the layer and args are the arguments like the input shape, the number of filters the layer should have. 
+Firstly, using such a widespread framework has the advantage of a large community that supports difficult situations;
+secondly, it will be a larger compatibility on Operating Systems, GPUs and hardware in general.
 
-
-\newgeometry{margin=1in}
 
 \begin{longtable}{ p{.30\textwidth} | p{.70\textwidth}} 
-\caption{Table of tensorflow API used in the thesis}\\
+\caption{Table of tensorflow API used in the thesis.}\\
 \hline
 $abs(...);$ & Computes the absolute value of a tensor. \\
 
@@ -747,11 +772,9 @@ $stats.covariance(...);$ & Sample covariance between observations indexed by eve
 \label{tab:tensorflowprobability}
 \end{longtable}
 
-\restoregeometry
-
 \subsection{Loss Function}
 
-To build the first loss function, it was used a QNR approximation. 
+At the beginning, to build the loss function, it was used a QNR approximation 
 
 \begin{equation}
     f(x) = 1 - \widetilde{QNR}
@@ -760,64 +783,68 @@ To build the first loss function, it was used a QNR approximation.
 %
 where $\widetilde{QNR}$ is the approximated QNR.
 
-The $D_s$ and $D_\lambda$ were calculated using the Qavg that is the average of Q evaluation for each band. The Q was calculated considering the whole image and not
+The $D_s$ and $D_\lambda$ were calculated using the Qavg, that is the average of Q indexes computed for each band. The Q index was calculated considering the whole image and not
 dividing it into small patches.
-The result shows series of negative values instead of values between 0 and 1 as the original images format.
-This is why the performance was unsatisfactory ( results illustated in the Chapter \ref{chap4}).
-Indeed, the model wants to minimize the loss functions ( maximize the QNR considering \ref{loss} ) no matter 
+The result shows a series of negative values instead of values between 0 and 1 as the original images format.
+This is why the performance was unsatisfactory (results are illustrated in the Chapter \ref{chap4}).
+Indeed, the model minimizes the loss functions (namely, it maximizes the QNR, considering \ref{loss}) no matter 
 the sense of output values.
 After some tests, it was considered to solve this problem using the $D_sreg$ described in \cite{dsreg} instead of $D_s$  
 and migrate to an approximation of HQNR instead of the QNR.
-Implement the exact HQNR it was impossible due to the difficulty on manupulating quaternions and hypercomplex numbers in TensorFlow in such
+Implementing the exact HQNR was unfeasible due to the difficulty on manupulating quaternions and hypercomplex numbers in TensorFlow in such
 a way that the function would be kept differentiable.
 In order to gain better performance, different kind of $D_\lambda$ has been implemented according to the scientific community and the QNR author itself.
 
 \chapter{Implementation details and experimental results}\label{chap4}
 \section{Description}
-The code was written in python 3.7 using the file main.py as a entrypoint. It is compatible with Linux, Windows and MacOS and can run on dedicated GPU as well as on CPU.
-Obviously, on CPU with a large decrease in performance in the training.
-The software was implemented using the standard $argparse$ library in such a way that all the possible algorithms, methods, parameters, learning rate and so on,
-can be defined with arguments on the terminal.
-This allow to run, with a bash file, all the experiments in series without changing the code.
+\label{description}
+The implemented code has been written in Python 3.7 with the use of file \texttt{main.py} as a entrypoint. 
+It is compatible with Linux, Windows and MacOS and it can run on dedicated GPU as well as on CPU.
 
-In the beginning, the QNR function has developed with an approximation. In the Appendix \ref{qnr_functions} the reader can 
-find all the principal functions written for the QNR. 
-As described in the code, the Q has obtained as an average of the Q calculated band-by-band.
-This means is not calculated in patches as the original paper of the QNR describe.
-The rest of the function is as similar as possible to the original paper.
-As formalized in the Eq. \ref{ds}, to obtain the $D_lambda$, for each band of MS and the fused image, the Q is calculated between
-the band and the others. This can gives a consistency measure between bands. 
-To obtain the $D_s$, according to the Eq. \ref{dl}, for every band of the MS and the fused image it is calculated the Q between the band and
-pan degraded and pan, respectively. This gives a quality measurements of the details inserted into the image. 
+By the use of the standard \texttt{argparse} library, all the possible parameters can be codified on terminal.
+This allows to run, with a bash file, all the experiments in series without changing the code.
 
-Because the QNR poor performance, it was decided to use the HQNR. Also the implementation of this index have some approximations due to the lack of tensorflow hypercomplex API.
-To calculate the $D_\lambda$, instead of using a Q4, it was used the same implementation of the Q average used for the QNR.
-The team has opted for a $D_sreg$, an implementation of the $D_s$ that take advantages from the $r squared$ calculation.  
+At the beginning, the QNR function has been developed with approximations. 
+In the Appendix \ref{qnr_functions} are presented the most important functions for the QNR evaluation.
+As showed in the Appendix \ref{qnr_functions}, the Q has been obtained as an average of the Q calculated band-by-band
+instead of being calculated in patches as the original paper of the QNR described.
+In order to obtain the spectral consistency measure $D_\lambda$, for each band of MS and fused image, 
+it has been necessary the a calculation of Q between bands as formalized in the Eq. \ref{ds}.
+$D_s$, according to the Eq. \ref{dl}, has been calculated as the Q between MS bands and $PAN_L$ and also between the fused image and the PAN.
+This gives a quality measurements of the details inserted into the image. 
 
-The implementation is illustated in the Appendix \ref{hqnr_functions}.
-The $D_sreg$ is obtained as $1 - rsquared$ between the fused image and the pan. 
-The $D_lambda$ is the result of $1 - Q$ between the fused image filtered with a gaussian filter and the MS.
-The filter used can be different depends on the sensor used for the image acquisition.
-This because the filter should match the sensor MTF.   
-The filters were created with the Matlab Toolbox, exported in the .mat format and imported in the project at runtime.
+Due to QNR poor performance, it has been decided to use an approximation of HQNR. 
+Approximations are given due to the lack of Tensorflow hypercomplex API.
+Instead of using Q4, for calculating $D_\lambda$, the Qavg used for the QNR has been adopted.
+The $D_\lambda$ is the result of $1 - Q$ between the fused image filtered through a Gaussian filter and the MS.
+
+We opted for a $D_sreg$, an implementation of the $D_s$ that takes advantages from the \textit{coefficient of determination} calculation. 
+The coefficient of determination, also called R-squared (R2), is a statistical measure that represents the proportion of the variance for a dependent variable that is predictale from the indipendent variables.
+
+The $D_sreg$ is obtained as $1 - rsquared$ between the fused image and the PAN. 
+The implementation is illustrated in the Appendix \ref{hqnr_functions}.
+Depending on the sensor used for the image acquisition, the filter would be different to match the sensor MTF.
+The filters were created with the Matlab Toolbox, exported in the \texttt{.mat} format and imported in the project at runtime.
 It was decided to not use padding after the filtering process and cut the extra-pixel from the MS for the Q calculation.  
 
-An important choice was the learning rate. The learning rate is multiplied with the gradinet of the error for each layer.
-This means that determines how quickly the descent will be. With a too fast descent, the model could not reach the minimum
-but with a too low learning rate, it can take long time to reach the convergence or get stuck in a local minimum.
-The best approach used by the community is to use a learning rate scheduler like Adam or SGD.
-At the start of the training, the model can have a high learning rate so that can explore all the loss function and after 
-reaching a great descent, gradually degrade the learning rate and avoid oscillations.
-The learning rate is one of the parameter that require some experiments to be tuned.
-The best case is to reach the maximum possible quality with a constant increase in performance during the training.
-The main index of performance was the q2n. This because the q2n is, in this moment, the best index and being a reference index means to be really robust respect to 
-a non reference one. 
-It is important in the training to avoid a bell shape in the index graph. The bell shape indicates that the q2n increase really fast at the beginning and
-after reaching the pick value of optimum, decrease really fast. 
-With this behaviour, it can be really difficult in real application stops the training in the right epoch because
-it is not possible to calculate the q2n and at some point the model can have a performance degradation.
+An important choice was the learning rate. The learning rate is multiplied with the gradient of the error for each layer
+and it will determines how quickly the error decrease. 
 
-Without the bell shape during the training, the model can only have an increase in performance and after, a stable phase in which the index has not a notable mutation.
+If the learning rate is too high, the error will drop down quickly, but difficulties will be encountered in finding minimum.
+With a too low learning rate, it can take long time to reach the convergence or get stuck in a local minimum.
+According to the community, the best approach is to use a learning rate scheduler like Adam \cite{adam} or SGD \cite{sgd}.
+At the start of the training, the model can have a high learning rate so that it can explore all the loss function.
+After that, a great descent would be reached and the learning rate would gradually degrade in order to avoid oscillations.
+The learning rate is one of the parameters that require some experiments to be tuned.
+The best case is to reach the maximum possible quality with a constant increase in performance during the training.
+The main index of performance was Q2n. At the moment, Q2n is the best index used with reference image.
+It is important in the training to avoid a bell shape in the index graph. Bell shape indicates that the Q2n increase really fast at the beginning.
+After reaching the pick value of optimum, it decrease really fast. 
+This characteristic would made the training really difficult in real applications.
+The reason why is that the calculation would be impossible due to the inexistence of reference image.
+
+Without the bell shape during the training, the model can only have an increase in performance.
+After that, stable phase would be achieved by performance.
 
 
 \section{Experimental Settings}
@@ -831,93 +858,91 @@ Without the bell shape during the training, the model can only have an increase 
 \end{figure}
 
 
-All types of training have been executed in a test image illustated with a true color representation in Fig. \ref{fig:toulouse}.
-Toulouse dataset: An IKONOS image has been acquired over the city of Toulouse, France, in the 2000.
-The MS sensor acquires an image of 512×512 pixels in the visible and near-infrared spectrum range in 4
+All types of training have been executed in a test image illustrated with a true color representation in Fig. \ref{fig:toulouse} identified as Toulouse dataset.
+Toulouse dataset is an IKONOS image acquired over the city of Toulouse, France, in 2000.
+The MS sensor acquires an image of 512$\times$512 pixels in the visible and near-infrared spectrum range in 4
 different bands and with a 4m spatial sampling interval (SSI). 
-The pancromatic image is constitute by an image of 2048×2048 pixels with a 1m SSI.
+The pancromatic image is constituted by an image of 2048$\times$2048 pixels with a 1m SSI.
 
-In general, deep learning models should not be specialized too much for the training set.
-The reason why is that the model could have worse performance for data in which the it is not trained for,
-like in the real world.
-To avoid this situation, is necessary to create a validation set for the training. The validation set is a dataset
-in which there are data that net is not trained for. Performance on the validation set are more similar to real performance.
+DL models should not be specialized too much for the training set.
+As the model could have worse performance for data not trained for like in the real applications.
+To avoid this situation, it is necessary to create a validation set in which there are different data. 
+Performance on the validation set are more similar to real world performance.
 The validation process is described in the Fig. \ref{fig:validation}.
 
 \begin{figure}[t]
     \centering
     \includegraphics[scale=.5]{validation.png}
-    \caption{Validation process for RR and NOREF method}
+    \caption{Validation process}
     \label{fig:validation}
 \end{figure}
 
-To generate a reference image for the quality assessment, MS and PAN has been downsampled.
+To generate a reference image for the quality assessment, MS and PAN has been downsampled
 The original MS has been used as Ground Truth (GT).
-For the reason of brevity, the two downgraded images will be called $MS_L$ and $PAN_L$ for simplicity.
 
-At every epoch, the $PAN_L$ and $MS_L$ were used 
+At every epoch, the downsampled images $PAN_L$ and $MS_L$ were used 
 to produce a fused image with the updated weights and compared with the GT.
-This means that these images constitute the validation set. 
-Reference indexes like SAM, ERGAS and Q and also no reference indexes QNR and HQNR were calculated between the output of the model and the GT.
-Those indexes has been calculated with the MatLab toolbox functions provided by \cite{criticalComparison} and MatLab engine 
+This means that the images will constitute the validation set. 
+Reference indexes like SAM, ERGAS and Q together with \textit{no-reference} indexes QNR and HQNR were calculated between the output of the model and the GT.
+Those indexes has been obtained with the MatLab toolbox functions provided by \cite{criticalComparison} and MatLab engine 
 for python \cite{matlab}.
-This procedure can give a real performance assessment of the whole model.
-The training set have always better performance as the model optimize the 
-error of these data. It needs to be highlight that only the performance of the validation set are relevant. 
+The procedure can give a real performance assessment of the whole model.
+The training set have always better performance as the model optimizes the 
+error of these data. It needs to be highlighted that only the performance of the validation set are relevant. 
 
-For the training, as described in the Paragraph \ref{sec:lossfunction}, the $PAN_L$ and $MS_L$ in the RR approach are downsampled again because the model
-should have a target different from the GT.
+For the training in RR approach, as described in the Paragraph \ref{sec:lossfunction}, the $PAN_L$ and $MS_L$ are downsampled again as the model
+would have a different target from GT.
 Training the model with the GT as target have no valid applications.
-In real world, the model would not have a GT as target.
-Additionally, the validation set would have no relevant performance because the model is just trained with the same data.
+In real world, the model would not have a GT.
+Additionally, the validation set would have no relevant performance as the model is trained with the same data.
 
-It has been noticed that, for some images, the model that use the fine-tuning with the reference approach has worse performance to the original ones.
-The reason is that the model is fine-tuned with the downgrade images.
+It has been noticed that, for some images, the model that uses the fine-tuning with the reference approach has worse performance than the original one.
+The reason is that the model is fine-tuned with the downgraded images.
 
-The characteristics of the sensors, in general, are not scale invariance and downsampling the input does not guarantee similar performance like using the original images
+The characteristics of the sensors, in general, do not satisfy the scale invariance hypothesis and downsampling the input does not guarantee similar performance like using the original images
 as described also in the previous chapters.
 
-In the NOREF approach, the images are not downsampled again because the model use a no-reference loss function.
+In the NOREF approach, the images are not downsampled again as the model use a \textit{no-reference} loss function.
 
-To compare the different methods, it was also trained the model with the GT image itself using the MSE loss function.
-The purpose is to compare the previous described methods with the best possible solution, but it is not applicable in a real approach.
+To compare the different methods, the model has been also trained with the GT image itself using the MSE loss function.
+The purpose is to compare the previous described methods with the best possible solution; however it is not applicable in a real approach.
 
 \section{Results}
-Using the original QNR function has not produce any positive results.
-During the training, while the error continued to be minimized, the indices calculated with the Matlab Toolbox worsened as showed in Fig.~\ref{fig:qnr1}~\ref{fig:qnr2}~\ref{fig:qnr3}, even the QNR itself.
-This because the model, to minimize the error, generate an image with negative values.
-An input with negative values is not expected by any of the indexes used and also by the loss function.
-This create a discrepancy between the QNR developed in tensorflow and used in the loss function and the QNR of the Matlab Toolbox.
-Indeed, with inputs having values between 0 and 1, the QNR developed in tensorflow and the Matlab one returns the same results.
+The use of the original QNR function has not produced any positive results.
+During the training, while the error continued to be minimized, the Matlab Toolbox indexes get worse as showed in Fig.~\ref{fig:qnr1},~\ref{fig:qnr2} and~\ref{fig:qnr3}, even the QNR itself.
+The reason is related to the fact that, in order to minimize the error, it has been generated an image with negative values.
+An input with negative values is not expected by any of the indexes used.
+This creates a discrepancy between the QNR used in the loss function and the QNR of the Matlab Toolbox.
+Indeed, with inputs having values between 0 and 1, the QNR developed in Tensorflow and the Matlab one returns the same results.
 
 
 \begin{figure}[t]
     \centering
-    \includegraphics[scale=.5]{qnr1.png}
-    \caption{Loss, DS and DL of QNR during the training}
+    \includegraphics[scale=.7]{qnr1.png}
+    \caption{Loss, DS and DL of QNR during the training.}
     \label{fig:qnr1}
 \end{figure}
 
 
 \begin{figure}
     \centering
-    \includegraphics[scale=.5]{qnr2.png}
-    \caption{Q2N, QNR, SCC, Q and HQNR during the training}
+    \includegraphics[scale=.7]{qnr2.png}
+    \caption{Q2N, QNR, SCC, Q and HQNR during the training.}
     \label{fig:qnr2}
 \end{figure}
 
 
 \begin{figure}
     \centering
-    \includegraphics[scale=.5]{qnr3.png}
-    \caption{ERGAS and SAM during the training}
+    \includegraphics[scale=.7]{qnr3.png}
+    \caption{ERGAS and SAM during the training.}
     \label{fig:qnr3}
 \end{figure}
 
-The loss tends to reach his minimum value but this is not reflected in an increase of the quality indexes. 
+The loss tends to reach his minimum value even though this is not reflected in an increase of the quality indexes. 
 
-After these tests, it was decided to change the loss function using another no-reference index: the HQNR.
-But this index is more complex than the QNR because it involve quaternions and operations with hypercomplex numbers.
+After those tests, it has been decided to change the loss function using another \textit{no-reference} index: the HQNR.
+However, this index is more complex than the QNR, as it involves quaternions and operations with hypercomplex numbers.
 
 As described in the previous chapter, it was applied an approximated version of HQNR and in the following graphs (Fig.~\ref{fig:hqnr1})
 the results are illustated for the Ikonos Toulouse image.
@@ -925,52 +950,76 @@ the results are illustated for the Ikonos Toulouse image.
 
 \begin{figure}[t]
     \centering
-    \includegraphics[scale=.2]{toulouse_noref.jpeg}
-    \caption{Q2N, QNR, SCC, Q and HQNR during the training using the loss function with HQNR}
+    \includegraphics[scale=.7]{toulouse_noref.png}
+    \caption{Q2N, QNR, SCC, Q and HQNR during the training using the loss function with HQNR.}
     \label{fig:hqnr1}
 \end{figure}
 
-With this type of loss function it was recorded an increase in all the indexes except for the QNR.
+With this type of loss function, it was recorded an increase in all the indexes except for the QNR.
 The QNR, as evidenced also by the previous results, does not seems to be a good index for the quality assessment.
 
-To explore all the possible values of q and p in the Eq.~\ref{dl}~\ref{ds}, 
-tests in different cases have been lauched. At the beginning with steps of 0.5 and after for particupar ranges with steps of 0.25.
+To explore all the possible values of $q$ and $p$ in the Eq.~\ref{dl}~\ref{ds}, 
+tests in different cases have been carried out, firstly, with steps of 0.5 and secondly, for particular ranges, with steps of 0.25.
 
-In Fig. \ref{fig:alpha_beta1} and \ref{fig:alpha_beta3}, in the legend the first argument is alpha and the second is beta.
-They are the inverse respectively of p and q. 
+In Fig.~\ref{fig:alpha_beta1} and~\ref{fig:alpha_beta3}, $\alpha$ and $\beta$ are defined in the Eq. \ref{hqnr}
 
 \begin{figure}[t]
     \centering
-    \includegraphics[scale=.5]{alpha_beta1.jpeg}
-    \caption{Alpha and Beta with a 0.5 step}
+    \includegraphics[scale=.7]{alpha_beta1.png}
+    \caption{Alpha and Beta with a 0.5 step.}
     \label{fig:alpha_beta1}
 \end{figure}
 
 
 \begin{figure}
     \centering
-    \includegraphics[scale=.5]{alpha_beta3.jpeg}
-    \caption{Beta with a 0.25 step between beta 0.5 and beta 2 and alpha setted to 0.5}
+    \includegraphics[scale=.7]{alpha_beta3.png}
+    \caption{Beta with a 0.25 step between $\beta$ 0.5 and $\beta$ 2 and $\alpha$ setted to 0.5.}
     \label{fig:alpha_beta3}
 \end{figure}
 
-The experiment conclusion was that best result are reached with alpha 0.5 and beta 2.
+The conclusion of the experiment shows that best results are reached with $\alpha$ 0.5 and $\beta$ 2.
 
-After this experiments, all the methods have been compared and the results are available in Fig. \ref{fig:gt_rr_noref}.
-GT is the method that use the Ground Truth during the training to have the best performance,
-RR is the method used in \cite{pnn} with a reduc        ed resolution training and the NOREF is the method
-implemented in this thesis with a full-resolution training and HQNR index described in the previous paragraphs. 
+After this experiments, all methods have been compared.
+While GT is the method that uses the Ground Truth during the training to have the best performance,
+RR is the method used in \cite{pnn} with reduced resolution training. 
+In addition to that approaches, a \textit{no-reference} method to train the model
+with full-resolution images described in the previous paragraphs has been implemented.
+
+Fig. \ref{fig:gt_rr_noref} shows the comparison between the three different methodologies. 
+The graph indicates that GT Q2n trend (in green) has a high margin of performance respect others. The expectation was that the model would reach a level close to 1. However, with the actual architecture, the model cannot achieve higher performance.
+Worst performance has been obtained by RR (in blue) where the trend had increased until the second epoch and after it remains stuck below 0.89. 
+The NOREF (in yellow) has a continuous growth and it remains constant from the 30th epoch. 
+The model has better performance than RR despite his recent application.
 
 \begin{figure}[t]
     \centering
-    \includegraphics[scale=.6]{toulouse_gt_rr_noref.png}
-    \caption{Experiment results with GT, RR and NOREF}
+    \includegraphics[scale=.7]{toulouse_gt_rr_noref.png}
+    \caption{Q2n experiment results with GT, RR and NOREF.}
     \label{fig:gt_rr_noref}
 \end{figure}
 
+\chapter{Conclusions}
 
-\chapter*{Conclusions}
-``I always thought something was fundamentally wrong with the universe'' \cite{criticalComparison}
+
+In conclusion, the use of a hybrid approach of RR and NOREF can have even better performance as it inherits the best aspect of both methods.
+Indeed, a hybrid model would use reduced resolution images (RR) with a robust reference index
+and, at the same time, images at the original resolution (NOREF) that 
+would compensate any problems due to scale variance.
+
+Furthermore, different architecture can be considered.
+An architecture with only convolutional layers includes a limited number of filters and every filter would be applied to the whole image.
+This implicates that a filter is trained to optimize the performance of the whole image instead of a particular area.
+Images can have different environments ( like rural or urban ) and the model could benefit by neurons divided to specialize different patches.
+
+This results can be achieved with different techniques.
+At first glance, it would be possible to generate multiple small models fine-tuned for patches.
+Furthermore, changing the model layers would deliver images processed in a specialized way.
+To this extent, in a dense layer, all neurons have their own specific weights that would be trained for the exact pixels in input.
+Indeed, the actual limit in \textit{pansharpening neural networks} (PNN) is treating images without considering the different morphology of them.
+
+This research lay the foundation for future development in the field of pansharpening.
+A \textit{no-reference} model with a more implemented and specialized image processing can overcome the limits of the model in use.
 \newpage
 
 \bibliographystyle{unsrt}
@@ -978,17 +1027,23 @@ implemented in this thesis with a full-resolution training and HQNR index descri
 
 \newpage
 
+
+\newgeometry{margin=1in}
+
 \appendix
 
 \begin{spacing}{1}
-\section{QNR}
-\label{qnr_functions}
-\lstinputlisting[language=python]{qnr.py}
+    \chapter{}
+        \section{QNR}
+        \label{qnr_functions}
+        \lstinputlisting[language=python]{qnr.py}
 
-\section{HQNR}
-\label{hqnr_functions}
-\lstinputlisting[language=python]{hqnr.py}
+        \section{HQNR}
+        \label{hqnr_functions}
+        \lstinputlisting[language=python]{hqnr.py}
 \end{spacing}
+
+\restoregeometry
 
 \end{document}
 
