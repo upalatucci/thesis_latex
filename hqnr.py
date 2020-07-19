@@ -1,3 +1,5 @@
+import tensorflow as tf
+
 def filter_image(origin_image, kernel):
     image = tf.expand_dims(origin_image, 0)
     kernel = tf.expand_dims(kernel, -1) 
@@ -31,8 +33,8 @@ def d_lambda(ms, fused, p, b, sensor):
   fused_filtered = gaussian_filtered_image(fused, sensor)
   return 1 - q_index(fused_filtered, ms[R:-R, R:-R, :])
 
-def hqnr(fused, ms, pan, pan_degraded, alpha, beta, p, q, bands, sensor):
+def hqnr(f, ms, pan, alpha, beta, bands, sensor):
   a = ( 1 - d_lambda(\
-      ms, fused, p=p, b=bands, sensor=sensor))**alpha
-  b = ( 1 - d_s_reg(fused, pan)) ** beta
+      ms, f, b=bands, sensor=sensor))**alpha
+  b = ( 1 - d_s_reg(f, pan)) ** beta
   return a*b

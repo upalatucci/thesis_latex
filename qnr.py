@@ -8,8 +8,12 @@ def q_index(y_true, y_pred):
     true_b_std = tf.math.reduce_std(y_true, [0, 1])
     pred_b_std = tf.math.reduce_std(y_pred, [0, 1])
 
-    true_b_mean = tf.cast(tf.reduce_mean(y_true, [0, 1]), tf.float32)
-    pred_b_mean = tf.cast(tf.reduce_mean(y_pred, [0, 1]), tf.float32)
+    true_b_mean = tf.cast(\
+        tf.reduce_mean(y_true, [0, 1]),\
+        tf.float32)
+    pred_b_mean = tf.cast(\
+        tf.reduce_mean(y_pred, [0, 1]),\
+        tf.float32)
     
     q1_b = cov_b / (true_b_std * pred_b_std)
     q2_b = (two * true_b_mean * pred_b_mean) / \
@@ -21,15 +25,18 @@ def q_index(y_true, y_pred):
     return tf.reduce_mean(q_b)
 
 
-def d_lambda(ms, fused, p, b): 
+def d_lambda(ms, f, p, b): 
     result = tf.constant(0.0, tf.float32)
     for l in range(b-1):
         for r in range(l+1, b):
-            result += tf.abs(tf.cast(\
-                q_index(fused[:, :, l:l+1], fused[:, :, r:r+1]\
-                    ), tf.float32) - \
-            tf.cast(\
-                q_index(ms[:, :, l:l+1], ms[:, :, r:r+1]), tf.float32))**p
+            result += tf.abs(\
+                tf.cast(\
+                    q_index(f[:, :, l:l+1], f[:, :, r:r+1]),\
+                    tf.float32) - \
+                tf.cast(\
+                    q_index(ms[:, :, l:l+1], ms[:, :, r:r+1]),\
+                    tf.float32)\
+                )**p
 
     b = tf.constant(b, tf.float32)
 
@@ -45,10 +52,14 @@ def d_s(ms, fused, pan, pan_degraded, q, b):
     result = tf.constant(0.0, tf.float32)
     
     for l in range(b):
-        result += tf.abs(tf.cast(\
-            q_index(fused[:, :, l:l+1], pan)\
-                , tf.float32) - \
-         tf.cast(q_index(ms[:, :, l:l+1], pan_degraded), tf.float32))**q
+        result += tf.abs(\
+            tf.cast(\
+                q_index(fused[:, :, l:l+1], pan),\
+                tf.float32) - \
+            tf.cast(\
+                q_index(ms[:, :, l:l+1], pan_degraded),\
+                tf.float32\
+            ))**q
 
     b = tf.constant(b, tf.float32)
 
