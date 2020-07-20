@@ -32,7 +32,9 @@
 	This requires the definition of a no-reference differentiable function and two no-reference quality assessment indexes have been tested for this purpose: QNR and HQNR. 
 	Furthermore, we had to implement new training and validation processes to compare different methods.
 	It was demonstrated that the QNR index as full resolution loss is not appropriate and, despite we performed some approximations to make the index differentiable, the HQNR shows better results related to the previous approach.
-	Tests on an ideal training scheme based on the target ( Ground truth ) show that there is room for further improvements.
+	Tests on an ideal training scheme based on the target ( Ground truth ) show some limitations and room for further improvements.
+	Improvements can be performed using a hybrid approach between reference and no-reference or also exploring different architectures.
+	In this case, the convolutional layer does not seem to be the right choice as the limited filters in this type of layer treat the whole image in the same way. Arguably, a layer able to process patches of the image differently depends on the specific characteristics can be a better approach. 
 	For these reasons, the current research lay the foundation of future development. 
 \end{abstract}
 \end{document}
