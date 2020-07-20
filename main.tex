@@ -516,7 +516,7 @@ Fig. \ref{fig:dl-architecture} illustrates a structure of a DL model.
 \begin{figure}[t]
     \centering
     \includegraphics[scale=1.2]{dlarchitecture.png}
-    \caption{Image by Maurice Peemen}
+    \caption{Image by Maurice Peemen of a typical deep learning model architecture}
     \label{fig:dl-architecture}
 \end{figure}
 
@@ -1007,33 +1007,16 @@ The model has better performance than RR despite his recent application.
 
 \begin{figure}
     \centering
-    \includegraphics[scale=.8]{Target.png}
-    \caption{Ground Truth used for validation}
-    \label{fig:comparison_target}
+    \includegraphics[scale=.6]{Target.png}
+    \includegraphics[scale=.6]{GT.png}
+    \includegraphics[scale=.6]{NOREF.png}
+    \includegraphics[scale=.6]{RR.png}
+    \caption{Ground Truth used for validation at the top left; GT result at the top right; NOREF result at the bottom left; RR at the bottom right}
+    \label{fig:comparison_results}
 \end{figure}
 
-\begin{figure}
-    \centering
-    \includegraphics[scale=.8]{GT.png}
-    \caption{Result of GT method}
-    \label{fig:comparison_gt}
-\end{figure}
 
-\begin{figure}
-    \centering
-    \includegraphics[scale=.8]{NOREF.png}
-    \caption{Result of NOREF method}
-    \label{fig:comparison_noref}
-\end{figure}
-
-\begin{figure}
-    \centering
-    \includegraphics[scale=.8]{RR.png}
-    \caption{Result of RR method}
-    \label{fig:comparison_rr}
-\end{figure}
-
-\bb{In Figs. \ref{fig:comparison_gt}, \ref{fig:comparison_noref}, \ref{fig:comparison_rr} the images obtained with GT, NOREF and RR methods are illustrated respectively.
+\bb{In Fig. \ref{fig:comparison_results}, the ground truth and the images obtained with GT, NOREF and RR methods are illustrated respectively.
 The images show some border effects noticeable primarily on the left border. Those effects are introduced since the prediction of the model (high pass component) that have a reduced size is added to the MS image used for the image (low pass component). 
 The convolutional layers of the network reduce the size of the output layer-by-layer depending on the used kernel. In particular, the model used for the experiments decreases the image by 6 pixels per side.}
 
@@ -1045,7 +1028,7 @@ The convolutional layers of the network reduce the size of the output layer-by-l
 \end{figure}
 
 \bb{For a better visual inspection, the differences of NOREF and RR with the ground truth are showed in the Fig. \ref{fig:diffcolors}
-The figure emphasise with red and yellow the significant errors and with blue the areas the negligible ones.
+The figure emphasise with red and yellow the significant errors and with blue the negligible ones.
 The RR difference image shows some red spots on the bottom and on the center but in the NOREF these areas are processed in a better way}
 
 
