@@ -839,7 +839,7 @@ If the learning rate is too high, the error will drop down quickly, but difficul
 With a too low learning rate, it can take long time to reach the convergence or the algorithm gets stuck in a local minimum.
 According to the community, the best approach is to use a learning rate scheduler like Adam \cite{adam} or SGD \cite{sgd}.
 At the start of the training, the model can have a high learning rate so that it can explore all the loss function.
-\bb{After that, a great descent would be discovered and the learning rate would gradually degrade to avoid oscillations.}
+After that, the learning rate will be gradually decreased to avoid oscillations.
 The learning rate is one of the parameters that requires some experiments to be tuned.
 The best case is to reach the maximum possible quality with a constant increase in performance during the training.
 The main index of performance was Q2N. At the moment, Q2N is the best index used with reference image.
@@ -868,8 +868,7 @@ The MS sensor acquires an image of 512$\times$512 pixels in the visible and near
 different bands and with a 4m spatial sampling interval (SSI). 
 The pancromatic image is constituted by an image of 2048$\times$2048 pixels with a 1m SSI.
 
-DL models should not be specialized too much for the training set.
-\bb{As the model could have worse performance for new data not included in the training set}.
+DL models should not be specialized too much for the training set otherwise, the model could have low performance for new data not included in the training set.
 To avoid this situation, it is necessary to create a validation set in which there are different data. 
 Performance on the validation set are more similar to real world performance.
 The validation process is described in the Fig. \ref{fig:validation}.
@@ -1005,6 +1004,7 @@ The NOREF method (in yellow) yields a continuous growth and remains constant fro
 The model has better performance than RR despite his recent application.
 
 
+
 \begin{figure}
     \centering
     \includegraphics[scale=.8]{Target.png}
@@ -1033,11 +1033,21 @@ The model has better performance than RR despite his recent application.
     \label{fig:comparison_rr}
 \end{figure}
 
-\bb{In Figs. \ref{fig:comparison_gt}, \ref{fig:comparison_noref}, \ref{fig:comparison_rr} the images obtained with GT, NOREF and RR methods are provided respectively.
-The images show some border effects noticeable primarily on the left border. Those effects are introduced since the prediction of the model (high pass component) that have a reduced size is added to the MS image used for the image (low pass component). The convolutional layers of the network reduce the size of the output layer-by-layer depends on the kernel used. The model used for the experiments decreases the image by 6 pixels per side.
-Compared to the Ground Truth in Fig. \ref{fig:comparison_target}, in all the images there are some errors near the river banks. For these errors, the kernel size holds the responsibility.
-Differences between the different methods can be noticed in the trees at the bottom left corner. 
-In the RR the colours are not generated correctly while NOREF and GT the effects of the solar light are faithfully reproduced.}
+\bb{In Figs. \ref{fig:comparison_gt}, \ref{fig:comparison_noref}, \ref{fig:comparison_rr} the images obtained with GT, NOREF and RR methods are illustrated respectively.
+The images show some border effects noticeable primarily on the left border. Those effects are introduced since the prediction of the model (high pass component) that have a reduced size is added to the MS image used for the image (low pass component). 
+The convolutional layers of the network reduce the size of the output layer-by-layer depending on the used kernel. In particular, the model used for the experiments decreases the image by 6 pixels per side.}
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=.35]{diff_PAN_NOREF_RR.png}
+    \caption{Images representing the channels sum of the difference between NOREF and RR with ground truth}
+    \label{fig:diffcolors}
+\end{figure}
+
+\bb{For a better visual inspection, the differences of NOREF and RR with the ground truth are showed in the Fig. \ref{fig:diffcolors}
+The figure emphasise with red and yellow the significant errors and with blue the areas the negligible ones.
+The RR difference image shows some red spots on the bottom and on the center but in the NOREF these areas are processed in a better way}
+
 
 \chapter*{Conclusions}
 \addcontentsline{toc}{chapter}{Conclusions}
