@@ -12,29 +12,32 @@
 
 
 \begin{abstract}
-	Deep Learning techniques are becoming increasingly important and
+	Deep learning techniques are becoming increasingly important and
 	some difficult tasks can be easily addressed with it.
-	It is characterized by Neural Networks with usually more than two layers that can learn exclusively from data instead of hand-crafted features hard to tune.
-	Computer vision has received a huge boost from these techniques surpassing for a lot of tasks the human ability like in object detection and indexing, segmentation and self-driving cars.
-	Indeed, Convolutional Neural Networks (CNN) have proven to be perfect at extracting features from raw images and they are widely adopted in computer vision.
-	Following this wave, the use of deep learning in remote sensing from a couple of years is becoming more predominant.
-	Remote sensing has its unique problems that are translated into new challenges for Deep Learning.
-	Indeed, light scattering mechanisms and sensors acquisition behaviour are arduous to model with mathematical formulas as involve object shapes, atmospheric effects and platform vibrations that can be unique for every frame.
-	However, a Neural Network can, in theory, overcome those complex issues with appropriate dataset and strategy.
-	Even if numerous satellites and planes register remote sensing data constantly for several years and the different space agency have collected exabyte of data, the images acquired are expensive. 
-	For this reason, the common problem is to build a large enough dataset to achieve discrete performance.
-	Recently a new Neural Network used for super-resolution was specialized for pansharpening ( called PNN ) and this became the starting point to accost the pansharpening with Deep Learning techniques.
-	For the limited dataset used, it was essential to build a network with few weights to train. 
-	Pansharpening is a particular case of super-resolution in which two images, one multispectral and one panchromatic, are fused to combine the properties of both. 
-	The main goal is to reach, in a new image, resolutions that cannot be obtained by a single sensor. This constitutes an important challenge for Deep Learning as there is not a target available for the training of the network.
-	In previous researches, to obtain a training target, the images have been downsampled. The downsampled images have been used as training inputs and the original ones as the targets. 
-	Our research aim is to explore a different approach called in Machine Learning Unsupervised Learning in which a target is not necessary for the training.
-	This requires the definition of a no-reference differentiable function and two no-reference quality assessment indexes have been tested for this purpose: QNR and HQNR. 
+	They are characterized by the use of neural networks with usually more than two layers, which can learn directly from data instead of resorting to hand-crafted features that are hard to tune.
+	Artificial intelligence applications have received a huge boost from these techniques, surpassing the human ability in a lot of tasks, like object detection and indexing, segmentation and self-driving cars.
+	In particular, Convolutional Neural Networks (CNN) have proven to be perfect in extracting features from raw images and they are widely adopted in computer vision.
+	
+	Following this wave, the use of deep learning in remote sensing from a couple of years is becoming predominant.
+	Remote sensing has specific problems that represent new challenges for deep learning.
+	Indeed, light scattering mechanisms and sensors acquisition behavior are arduous to model with mathematical formulas as they involve object shapes, atmospheric effects and platform vibrations that can be different for each image.
+	However, a neural network can, in theory, overcome those complex issues with appropriate datasets and strategies.
+	Even if numerous satellites and planes register remote sensing data constantly for several years and the different space agencies have collected exabytes of data, the acquired images are too expensive. 
+	For this reason, the common problem is to build a large enough dataset to achieve appreciable performance.
+	
+	Recently, a new neural network used for super-resolution was specialized for pansharpening (called PNN) and this became the starting point to approach this particular problem by deep learning techniques. Pansharpening is a particular case of super-resolution, in which two images, one multispectral and one panchromatic, are fused to combine the properties of both. 
+	The main goal is to reach, in a new image, a resolution that cannot be obtained by a single sensor. This constitutes a specific challenge for deep learning as there is no target available for the training of the network. Moreover, because of the small size of the available datasets, it is essential to build a network with few weights to train. 
+	In previous researches, to obtain a training target, the images have been downsampled. The downsampled images have been used as training inputs and the original ones as the targets.
+	
+	Our research aim is to explore a different approach that is classified in machine learning as unsupervised learning since the target is not employed for the training.
+	This requires the definition of a no-reference differentiable function. Two no-reference quality assessment indexes have been tested for this purpose: QNR and HQNR. 
 	Furthermore, we had to implement new training and validation processes to compare different methods.
-	It was demonstrated that the QNR index as full resolution loss is not appropriate and, despite we performed some approximations to make the index differentiable, the HQNR shows better results related to the previous approach.
-	Tests on an ideal training scheme based on the target ( Ground truth ) show some limitations and room for further improvements.
-	Improvements can be performed using a hybrid approach between reference and no-reference or also exploring different architectures.
-	In this case, the convolutional layer does not seem to be the right choice as the limited filters in this type of layer treat the whole image in the same way. Arguably, a layer able to process patches of the image differently depends on the specific characteristics can be a better approach. 
-	For these reasons, the current research lay the foundation of future development. 
+	
+	In this study, it was demonstrated that the QNR index is not appropriate as full resolution loss and, despite we performed some approximations to make the index differentiable, the HQNR shows better results with respect to the first index. The suitability of the proposed approach that employs images at the original resolution for the network training was finally confirmed by comparing the achievable results to the widespread method that uses the degraded images.     
+	
+	Tests on an ideal training scheme based on the target (ground truth) show some limitations and demonstrate that there is room for further improvements.
+	They could be pursued by using a hybrid approach that jointly uses the reference and no-reference  indexes, or also by exploring different architectures.
+	In fact, the convolutional layer does not seem to be the optimal choice, as the filters in this type of layer treat the whole image in the same way. Arguably, a layer able to differently process the various patches of the image according to their specific characteristics can be a better approach. 
+	For these reasons, the current research lay the foundation of future developments. 
 \end{abstract}
 \end{document}

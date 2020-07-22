@@ -8,6 +8,7 @@
 \usepackage{graphicx}
 \usepackage{url}
 \usepackage{amsmath}
+\usepackage{subfig}
 \usepackage[margin=1.5in]{geometry}
 \usepackage{listings}
 \usepackage{setspace}
@@ -496,7 +497,7 @@ Other layers like the pooling layer, max-pooling layer and dropout were created 
 \begin{figure}[t]
     \centering
     \includegraphics[scale=.5]{layers-features.png}
-    \caption{Feature extraction of a deep model \cite{featuresextract}}
+    \caption{Feature extraction in a deep network \cite{featuresextract}.}
     \label{fig:featuresextract}
 \end{figure}
 
@@ -516,7 +517,7 @@ Fig. \ref{fig:dl-architecture} illustrates a structure of a DL model.
 \begin{figure}[t]
     \centering
     \includegraphics[scale=1.2]{dlarchitecture.png}
-    \caption{Image by Maurice Peemen of a typical deep learning model architecture}
+    \caption{Typical deep learning model architecture \cite{archdeeplearning}}
     \label{fig:dl-architecture}
 \end{figure}
 
@@ -647,9 +648,6 @@ This is because the model is trained with the images at the highest possible res
 Indeed, the loss computation is done using a \textit{no-reference} index.
 For this reason, this approach belongs into the \textit{unsupervised learning} field.
 Oppositely to \textit{supervised learning}, unsupervised learning is a subfield of ML where the training process is not leaded by a target.
-
-
-
 
 
 \section{Automatic Differentiation}
@@ -1007,29 +1005,29 @@ The model has better performance than RR despite his recent application.
 
 \begin{figure}
     \centering
-    \includegraphics[scale=.6]{Target.png}
-    \includegraphics[scale=.6]{GT.png}
-    \includegraphics[scale=.6]{NOREF.png}
-    \includegraphics[scale=.6]{RR.png}
-    \caption{Ground Truth used for validation at the top left; GT result at the top right; NOREF result at the bottom left; RR at the bottom right}
+    \subfloat[Reference image]{\includegraphics[scale=.7]{Target.png}}\hfill
+    \subfloat[GT Training]{\includegraphics[scale=.7]{GT.png}}\\
+    \subfloat[NOREF Training]{\includegraphics[scale=.7]{NOREF.png}}\hfill
+    \subfloat[RR Training]{\includegraphics[scale=.7]{RR.png}}
+    \caption{Comparison of the original MS data that acts as reference image (a) and the pansharpened products obtained by using the GT approach (b), the NOREF approach (c) and the RR approach (d).}
     \label{fig:comparison_results}
 \end{figure}
-
-
-\bb{In Fig. \ref{fig:comparison_results}, the ground truth and the images obtained with GT, NOREF and RR methods are illustrated respectively.
-The images show some border effects noticeable primarily on the left border. Those effects are introduced since the prediction of the model (high pass component) that have a reduced size is added to the MS image used for the image (low pass component). 
-The convolutional layers of the network reduce the size of the output layer-by-layer depending on the used kernel. In particular, the model used for the experiments decreases the image by 6 pixels per side.}
-
 \begin{figure}
-    \centering
-    \includegraphics[scale=.35]{diff_PAN_NOREF_RR.png}
-    \caption{Images representing the channels sum of the difference between NOREF and RR with ground truth}
+    \subfloat[NOREF Training]{\includegraphics[scale=.3]{diff_NOREF.png}}\hfill
+    \subfloat[RR Training]{\includegraphics[scale=.3]{diffRR.png}}
+    \caption{MSE between the reference image and the final products obtained by employing the NOREF training (a) and the RR training (b).}
     \label{fig:diffcolors}
 \end{figure}
 
-\bb{For a better visual inspection, the differences of NOREF and RR with the ground truth are showed in the Fig. \ref{fig:diffcolors}
-The figure emphasise with red and yellow the significant errors and with blue the negligible ones.
-The RR difference image shows some red spots on the bottom and on the center but in the NOREF these areas are processed in a better way}
+In Fig. \ref{fig:comparison_results}, the ground truth and the images obtained with GT, NOREF and RR methods are illustrated respectively.
+The images show some noticeable border effects primarily on the left border. Those effects are introduced since the prediction of the model (high pass component) have a size smaller than the low pass component, namely the upsampled MS image. 
+In fact, the convolutional layers of the network reduce the size of the output layer-by-layer depending on the used kernel. In particular, the model used for the experiments decreases the size of the image by 6 pixels per side.
+
+
+
+For a better visual inspection, the \textit{mean square errors} (MSEs) related to the final products related to the NOREF and the RR training algorithms are shown in Fig.~\ref{fig:diffcolors}.
+The figure highlights with red and yellow colors the most significant errors and with the blue color the areas where the error values are negligible (hot/cold colormap).
+The RR MSE image shows some red spots on the bottom and on the center, while the left MSE image proves that with the NOREF approach these areas are processed in a better way.
 
 
 \chapter*{Conclusions}
@@ -1057,7 +1055,7 @@ To this extent, in a dense layer, all neurons have their own specific weights th
 Indeed, the actual limit in \textit{pansharpening neural networks} (PNN) is treating images without considering the different morphology of them.
 
 For these reasons, the current research lay the foundation for future development in the field of pansharpening.
-A \textit{no-reference} model with a more implemented and specialized image processing can overcome the limits of the model in use.
+
 \newpage
 
 \bibliographystyle{unsrt}
